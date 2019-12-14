@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="deal">
+            <h2><span>Deal</span> {{deal.id}}</h2>
+            <hr>
+            <app-alert-error></app-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Tag Id</span></dt>
+                <dd>
+                    <span>{{deal.tagId}}</span>
+                </dd>
+                <dt><span>From Iso Code</span></dt>
+                <dd>
+                    <span>{{deal.fromIsoCode}}</span>
+                </dd>
+                <dt><span>To Iso Code</span></dt>
+                <dd>
+                    <span>{{deal.toIsoCode}}</span>
+                </dd>
+                <dt><span>Time</span></dt>
+                <dd>
+                    <span>{{deal.time}}</span>
+                </dd>
+                <dt><span>Amount</span></dt>
+                <dd>
+                    <span>{{deal.amount}}</span>
+                </dd>
+                <dt><span>Source</span></dt>
+                <dd>
+                    <span>{{deal.source}}</span>
+                </dd>
+                <dt><span>Source Format</span></dt>
+                <dd>
+                    <span>{{deal.sourceFormat}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/deal', deal.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

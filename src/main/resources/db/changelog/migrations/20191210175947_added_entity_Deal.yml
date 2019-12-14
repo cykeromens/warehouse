@@ -1,0 +1,85 @@
+databaseChangeLog:
+    - preConditions:
+      - runningAs:
+          username: warehouse
+#    -property:
+#      -name: now
+#      -value: now()
+#      -dbms: h2
+#    -property:
+#      -name: now
+#      -value: now()
+#      -dbms: mysql
+#    -property:
+#      -name: autoIncrement
+#      -value: true
+#    -property:
+#      -name: floatType
+#      -value: float4
+#      -dbms: postgresql, h2
+#    -property:
+#      -name: floatType
+#      -value: float
+#      -dbms: mysql, oracle, mssql
+
+    - changeSet:
+        id: 20191210175947-1
+        author: cyprian
+        changes:
+        - createTable:
+            tableName: deal
+            columns:
+            - column:
+                name: id
+                type: bigint
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: tag_id
+                type: varchar(50)
+                constraints:
+                  unique: true
+                  nullable: false,
+                  uniqueConstraintName: ux_deal_tag_id
+            - column:
+                name: from_iso_code
+                type: varchar(3)
+                constraints:
+                  nullable: false
+            - column:
+                name: from_country
+                type: varchar(25)
+            - column:
+                name: to_iso_code
+                type: varchar(3)
+                constraints:
+                  nullable: false
+            - column:
+                name: to_country
+                type: varchar(25)
+            - column:
+                name: time
+                type: datetime
+                constraints:
+                  nullable: false
+            - column:
+                name: amount
+                type: decimal(10,2)
+                constraints:
+                  nullable: false
+            - column:
+                name: source
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: source_format
+                type: varchar(255)
+                constraints:
+                  nullable: false
+        -dropDefaultValue:
+            -tableName: deal
+            -columnName: time
+            -columnDataType: dateTime
