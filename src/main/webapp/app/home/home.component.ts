@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FileLoader, IFileLoader} from 'app/shared/model/file-loader.model';
 import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
 import {Observable, Subscription} from 'rxjs';
 import {HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {IDeal} from 'app/shared/model/deal.model';
-import {DealService} from 'app/deal';
+import {DealService} from 'app/entities/deal';
 import {ITEMS_PER_PAGE} from 'app/shared';
+import {Router} from '@angular/router';
+import {Summary} from 'app/shared/model/summary.model';
+import {SummaryService} from 'app/entities/summary';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['home.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     enableForm: boolean;
     fileLoader: IFileLoader;
     isSaving: boolean;
 
-    deals: IDeal[];
+    summaries: Summary[];
     eventSubscriber: Subscription;
     itemsPerPage: number;
     links: any;
@@ -28,16 +31,17 @@ export class HomeComponent implements OnInit {
     totalItems: number;
     fileToUpload: File = null;
 
-
     constructor(
         protected dealService: DealService,
+        protected summaryService: SummaryService,
         protected jhiAlertService: JhiAlertService,
         protected eventManager: JhiEventManager,
         protected parseLinks: JhiParseLinks,
         protected dataUtils: JhiDataUtils,
+        private router: Router
 
     ) {
-        this.deals = [];
+        this.summaries = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
         this.links = {
@@ -88,7 +92,7 @@ export class HomeComponent implements OnInit {
 
     protected onSaveSuccess() {
         this.isSaving = false;
-        this.previousState();
+        this.router.navigate(['/summary']);
     }
 
     protected onSaveError() {
@@ -96,21 +100,21 @@ export class HomeComponent implements OnInit {
     }
 
     loadAll() {
-        this.dealService
+        this.summaryService
             .query({
                 page: this.page,
                 size: this.itemsPerPage,
                 sort: this.sort()
             })
             .subscribe(
-                (res: HttpResponse<IDeal[]>) => this.paginateDeals(res.body, res.headers),
+                (res: HttpResponse<any[]>) => this.paginateSummary(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
 
     reset() {
         this.page = 0;
-        this.deals = [];
+        this.summaries = [];
         this.loadAll();
     }
 
@@ -128,7 +132,7 @@ export class HomeComponent implements OnInit {
     }
 
     registerChangeInDeals() {
-        this.eventSubscriber = this.eventManager.subscribe('dealListModification', response => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('summaryListModification', response => this.reset());
     }
 
     sort() {
@@ -139,12 +143,10 @@ export class HomeComponent implements OnInit {
         return result;
     }
 
-    protected paginateDeals(data: IDeal[], headers: HttpHeaders) {
+    protected paginateSummary(data: Summary[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        for (let i = 0; i < data.length; i++) {
-            this.deals.push(data[i]);
-        }
+        this.summaries.push(...data);
     }
 
     protected onError(errorMessage: string) {

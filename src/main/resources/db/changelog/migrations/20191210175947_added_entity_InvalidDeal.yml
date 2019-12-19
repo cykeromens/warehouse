@@ -1,0 +1,56 @@
+#Added the entity InvalidDeal.
+databaseChangeLog:
+- preConditions:
+  - runningAs:
+      username: root
+- changeSet:
+    id: 20191210175947-1
+    author: cyprian
+    changes:
+    - createTable:
+        tableName: invalid_deal
+        columns:
+        - column:
+            name: id
+            type: bigint
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+        - column:
+            name: tag_id
+            type: varchar(50)
+        - column:
+            name: from_iso_code
+            type: varchar(3)
+        - column:
+            name: from_country
+            type: varchar(25)
+        - column:
+            name: to_iso_code
+            type: varchar(3)
+        - column:
+            name: to_country
+            type: varchar(25)
+        - column:
+            name: time
+            type: datetime
+        - column:
+            name: amount
+            type: decimal(10,2)
+        - column:
+            name: source
+            type: varchar(255)
+        - column:
+            name: source_format
+            type: varchar(255)
+        - column:
+            name: reason
+            type: varchar(255)
+        - column:
+            name: uploaded_date
+            type: datetime
+    -dropDefaultValue:
+      -tableName: invalid_deal
+      -columnName: time
+      -columnDataType: dateTime

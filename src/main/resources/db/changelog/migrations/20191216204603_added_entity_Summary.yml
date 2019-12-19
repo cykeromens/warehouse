@@ -1,0 +1,50 @@
+#Added the entity Deal.
+
+databaseChangeLog:
+- preConditions:
+  - runningAs:
+      username: root
+- changeSet:
+    id: 20191216204603-1
+    author: cyprian
+    changes:
+    - createTable:
+        tableName: summary
+        columns:
+        - column:
+            name: id
+            type: bigint
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+        - column:
+            name: file_name
+            type: varchar(50)
+            constraints:
+              unique: true
+              nullable: false,
+              uniqueConstraintName: ux_file_name_id
+        - column:
+            name: process_duration
+            type: decimal(10,4)
+            constraints:
+              nullable: false
+        - column:
+            name: total_imported
+            type: int
+            constraints:
+              nullable: false
+        - column:
+            name: total_valid
+            type: int
+            constraints:
+              nullable: false
+        - column:
+            name: total_not_valid
+            type: int
+            constraints:
+              nullable: false
+        - column:
+            name: uploaded_date
+            type: datetime

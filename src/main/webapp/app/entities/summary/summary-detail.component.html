@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="summary">
+            <h2><span>Summary</span> {{summary.id}}</h2>
+            <hr>
+            <app-alert-error></app-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>File Name</span></dt>
+                <dd>
+                    <span>{{summary.fileName}}</span>
+                </dd>
+                <dt><span>Process Duration</span></dt>
+                <dd>
+                    <span>{{summary.processDuration}}</span>
+                </dd>
+                <dt><span>Total Imported</span></dt>
+                <dd>
+                    <span>{{summary.totalImported}}</span>
+                </dd>
+                <dt><span>Total Valid</span></dt>
+                <dd>
+                    <span>{{summary.totalValid}}</span>
+                </dd>
+                <dt><span>Total Not Valid</span></dt>
+                <dd>
+                    <span>{{summary.totalNotValid}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/summary', summary.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

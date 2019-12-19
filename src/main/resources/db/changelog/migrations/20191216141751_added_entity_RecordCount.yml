@@ -1,0 +1,40 @@
+#Added the entity RecordCount.
+databaseChangeLog:
+- preConditions:
+  - runningAs:
+      username: root
+- changeSet:
+    id: 20191216141751-1
+    author: cyprian
+    changes:
+    - createTable:
+        tableName: record_count
+        columns:
+        - column:
+            name: id
+            type: bigint
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+        - column:
+            name: currency_iso_code
+            type: varchar(3)
+            constraints:
+              unique: true
+              nullable: false,
+              uniqueConstraintName: ux_currency_iso_code_id
+        - column:
+            name: deals_count
+            type: bigint
+            constraints:
+              nullable: false,
+        - column:
+            name: last_updated
+            type: datetime
+            constraints:
+              nullable: false,
+    -dropDefaultValue:
+      -tableName: record_count
+      -columnName: last_updated
+      -columnDataType: dateTime

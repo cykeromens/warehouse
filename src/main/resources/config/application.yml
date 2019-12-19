@@ -23,10 +23,6 @@ spring:
             naming:
                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-    messages:
-        basename: i18n/messages
-    http:
-
     mvc:
         favicon:
             enabled: false
@@ -45,6 +41,6 @@ server:
                 http-only: true
 
 # application:
-app:
-    upload:
-        new: ./deals/new
+jdbc:
+    batch:
+        size: 10000

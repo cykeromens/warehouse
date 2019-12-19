@@ -14,7 +14,7 @@
 logging:
     level:
         ROOT: DEBUG
-        com.cluster.data.warehouse.web.rest: DEBUG
+        com.cluster.warehouse: DEBUG
 
 spring:
     profiles:
@@ -25,11 +25,13 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:file:./target/h2db/db/warehouse;DB_CLOSE_DELAY=-1
-        username: warehouse
+        username: root
         password: 12345
         hikari:
             poolName: Hikari
             auto-commit: false
+            maximumPoolSize: 10
+            minimum-idle: 10
     h2:
         console:
             enabled: false
@@ -50,3 +52,9 @@ server:
     port: 8080
 
 # application:
+app:
+  thread:
+    count: 10
+  upload:
+    dir: ./deals/new
+    delimiter: ;

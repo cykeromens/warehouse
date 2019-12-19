@@ -1,22 +1,20 @@
 import './vendor.ts';
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
-import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Ng2Webstorage } from 'ngx-webstorage';
-import { NgJhipsterModule } from 'ng-jhipster';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import {Ng2Webstorage} from 'ngx-webstorage';
+import {NgJhipsterModule} from 'ng-jhipster';
 
-import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
-import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
-import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
-import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { ClusterwarehouseSharedModule } from 'app/shared';
-import { ClusterwarehouseAppRoutingModule } from './app-routing.module';
+import {ErrorHandlerInterceptor} from './blocks/interceptor/errorhandler.interceptor';
+import {NotificationInterceptor} from './blocks/interceptor/notification.interceptor';
+import {ClusterwarehouseSharedModule} from 'app/shared';
+import {ClusterwarehouseAppRoutingModule} from './app-routing.module';
 import * as moment from 'moment';
-import { AppMainComponent, NavbarComponent, FooterComponent, ErrorComponent } from './layouts';
-import {ClusterwarehouseDealModule} from 'app/deal/deal.module';
-import {ClusterwarehouseHomeModule} from "app/home";
+import {AppMainComponent, ErrorComponent, FooterComponent, NavbarComponent} from './layouts';
+import {ClusterwarehouseHomeModule} from 'app/home';
+import {ClusterwarehouseEntityModule} from 'app/entities/entity.module';
 
 @NgModule({
     imports: [
@@ -29,21 +27,11 @@ import {ClusterwarehouseHomeModule} from "app/home";
         }),
         ClusterwarehouseSharedModule.forRoot(),
         ClusterwarehouseHomeModule,
-        ClusterwarehouseDealModule,
+        ClusterwarehouseEntityModule,
         ClusterwarehouseAppRoutingModule
     ],
     declarations: [AppMainComponent, NavbarComponent, ErrorComponent, FooterComponent],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthExpiredInterceptor,
-            multi: true
-        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerInterceptor,

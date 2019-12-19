@@ -1,13 +1,13 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Data } from '@angular/router';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {of} from 'rxjs';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ActivatedRoute, Data} from '@angular/router';
 
-import { ClusterwarehouseTestModule } from '../../test.module';
-import { DealComponent } from 'app/deal/deal.component';
-import { DealService } from 'app/deal/deal.service';
-import { Deal } from 'app/shared/model/deal.model';
+import {ClusterwarehouseTestModule} from '../../test.module';
+import {DealComponent} from 'app/entities/deal/deal.component';
+import {DealService} from 'app/entities/deal/deal.service';
+import {Deal} from 'app/shared/model/deal.model';
 
 describe('Component Tests', () => {
     describe('Deal Management Component', () => {
@@ -99,7 +99,7 @@ describe('Component Tests', () => {
 
             // WHEN
             comp.loadPage(1);
-            comp.reset();
+            // comp.reset();
 
             // THEN
             expect(comp.page).toEqual(0);
