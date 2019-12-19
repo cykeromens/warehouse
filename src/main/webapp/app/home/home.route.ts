@@ -1,12 +1,20 @@
-import { Route } from '@angular/router';
+import {Routes} from '@angular/router';
 
-import { HomeComponent } from './';
+import {HomeComponent} from './';
 
-export const HOME_ROUTE: Route = {
-    path: '',
-    component: HomeComponent,
-    data: {
-        authorities: [],
-        pageTitle: 'Welcome, Cluster Data Warehouse!'
+export const HOME_ROUTE: Routes = [
+    {
+        path: '',
+        component: HomeComponent,
+        data: {
+            authorities: [],
+            pageTitle: 'Welcome, Cluster Data Warehouse!'
+        }
+    },
+    {
+        path: 'home',
+        redirectTo: '/',
+        pathMatch: 'full'
+
     }
-};
+];

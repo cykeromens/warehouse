@@ -55,13 +55,6 @@ export class DealService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http
-            .get<IDeal[]>(this.resourceUrl, {params: options, observe: 'response'})
-            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-    }
-
     protected convertDateFromClient(deal: IDeal): IDeal {
         const copy: IDeal = Object.assign({}, deal, {
             time: deal.time != null && deal.time.isValid() ? deal.time.toJSON() : null

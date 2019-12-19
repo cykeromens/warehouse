@@ -19,8 +19,11 @@ public class RecordCount implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "currency_iso_code")
-    private String currencyISOCode;
+    @Column(name = "from_iso_code")
+    private String fromISOCode;
+
+    @Column(name = "to_iso_code")
+    private String toISOCode;
 
     @Column(name = "deals_count")
     private Long dealsCount;
@@ -36,17 +39,30 @@ public class RecordCount implements Serializable {
         this.id = id;
     }
 
-    public String getCurrencyISOCode() {
-        return currencyISOCode;
+    public String getFromISOCode() {
+        return fromISOCode;
     }
 
-    public RecordCount currencyISOCode(String currencyISOCode) {
-        this.currencyISOCode = currencyISOCode;
+    public RecordCount fromISOCode(String currencyISOCode) {
+        this.fromISOCode = currencyISOCode;
         return this;
     }
 
-    public void setCurrencyISOCode(String currencyISOCode) {
-        this.currencyISOCode = currencyISOCode;
+    public void setFromISOCode(String fromISOCode) {
+        this.fromISOCode = fromISOCode;
+    }
+
+    public String getToISOCode() {
+        return toISOCode;
+    }
+
+    public RecordCount toISOCOde(String toISOCode) {
+        this.toISOCode = toISOCode;
+        return this;
+    }
+
+    public void setToISOCode(String toISOCode) {
+        this.toISOCode = toISOCode;
     }
 
     public Long getDealsCount() {
@@ -94,7 +110,8 @@ public class RecordCount implements Serializable {
     public String toString() {
         return "RecordCount{" +
                 "id=" + getId() +
-                ", currencyISOCode='" + getCurrencyISOCode() + "'" +
+                ", fromISOCode='" + getFromISOCode() + "'" +
+                ", toISOCode='" + getToISOCode() + "'" +
                 ", dealsCount=" + getDealsCount() +
                 "}";
     }

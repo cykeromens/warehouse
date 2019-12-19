@@ -3,16 +3,30 @@
         <h2 id="page-heading">
             <span>Deals</span>
         </h2>
-        <jhi-alert></jhi-alert>
+        <div class="row">
+            <app-alert-error></app-alert-error>
+            <app-alert></app-alert>
+            <div class="col-sm-12">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group w-100 mt-3">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
+                               name="currentSearch" placeholder="Search...">
+                        <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                            <fa-icon [icon]="'search'"></fa-icon>
+                        </button>
+                        <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                            <fa-icon [icon]="'trash-alt'"></fa-icon>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <br/>
         <div class="table-responsive" *ngIf="deals">
             <table class="table table-striped">
                 <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
                     <th jhiSortBy="id"><span>ID</span>
-                        <fa-icon [icon]="'sort'"></fa-icon>
-                    </th>
-                    <th jhiSortBy="tagId"><span>Tag Id</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
                     <th jhiSortBy="fromIsoCode"><span>From Iso Code</span>
@@ -33,7 +47,6 @@
                 <tbody>
                 <tr *ngFor="let deal of deals ;trackBy: trackId">
                     <td><a [routerLink]="['/deal', deal.id, 'view' ]">{{deal.id}}</a></td>
-                    <td>{{deal.tagId}}</td>
                     <td>{{deal.fromIsoCode}}</td>
                     <td>{{deal.toIsoCode}}</td>
                     <td>{{deal.amount}}</td>
@@ -45,20 +58,6 @@
                                     class="btn btn-info btn-sm">
                                 <fa-icon [icon]="'eye'"></fa-icon>
                                 <span class="d-none d-md-inline">View</span>
-                            </button>
-                            <button type="submit"
-                                    [routerLink]="['/deal', deal.id, 'edit']"
-                                    class="btn btn-primary btn-sm">
-                                <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                                <span class="d-none d-md-inline">Edit</span>
-                            </button>
-                            <button type="submit"
-                                    [routerLink]="['/', 'deal', { outlets: { popup: deal.id + '/delete'} }]"
-                                    replaceUrl="true"
-                                    queryParamsHandling="merge"
-                                    class="btn btn-danger btn-sm">
-                                <fa-icon [icon]="'times'"></fa-icon>
-                                <span class="d-none d-md-inline">Delete</span>
                             </button>
                         </div>
                     </td>

@@ -17,6 +17,7 @@ export class InvalidDealComponent implements OnInit, OnDestroy {
     invalidDeals: IInvalidDeal[];
     error: any;
     success: any;
+    currentSearch: string;
     eventSubscriber: Subscription;
     routeData: any;
     links: any;
@@ -45,6 +46,17 @@ export class InvalidDealComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
+        if (this.currentSearch) {
+            this.invalidDealService
+                .query({
+                    page: this.page - 1,
+                    "source.contains": this.currentSearch,
+                    size: this.itemsPerPage,
+                    sort: this.sort()
+                })
+                .subscribe((res: HttpResponse<IInvalidDeal[]>) => this.paginateInvalidDeals(res.body, res.headers));
+            return;
+        }
         this.invalidDealService
             .query({
                 page: this.page - 1,
@@ -77,9 +89,27 @@ export class InvalidDealComponent implements OnInit, OnDestroy {
 
     clear() {
         this.page = 0;
+        this.currentSearch = '';
         this.router.navigate([
             '/invalid-deal',
             {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
+        this.loadAll();
+    }
+
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.page = 0;
+        this.currentSearch = query;
+        this.router.navigate([
+            '/invalid-deal',
+            {
+                search: this.currentSearch,
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }

@@ -48,3 +48,4 @@ databaseChangeLog:
         - column:
             name: uploaded_date
             type: datetime
+            defaultValueComputed: now()

@@ -47,9 +47,9 @@ export class DealComponent implements OnInit, OnDestroy {
     loadAll() {
         if (this.currentSearch) {
             this.dealService
-                .search({
+                .query({
                     page: this.page - 1,
-                    query: this.currentSearch,
+                    'source.contains': this.currentSearch,
                     size: this.itemsPerPage,
                     sort: this.sort()
                 })
@@ -91,6 +91,7 @@ export class DealComponent implements OnInit, OnDestroy {
 
     clear() {
         this.page = 0;
+        this.currentSearch = '';
         this.router.navigate([
             '/deal',
             {
@@ -101,6 +102,22 @@ export class DealComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.page = 0;
+        this.currentSearch = query;
+        this.router.navigate([
+            '/deal',
+            {
+                search: this.currentSearch,
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
+        this.loadAll();
+    }
     ngOnInit() {
         this.loadAll();
         this.registerChangeInDeals();

@@ -7,6 +7,7 @@ import com.cluster.warehouse.service.dealpool.ForkJoinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -105,16 +106,19 @@ public class DealServiceImpl implements DealService {
                 if (copy > 0) {
                     log.debug("File copied, forkjoin processing");
                     forkJoinService.fileToDatabase(location);
-//                    log.debug("/Time spent in processing and persisting {}", timeSpent);
-//                    summary.setProcessDuration(timeSpent);
-//                    summaryService.save(summary);
+                    log.debug("Finished processing file.");
                 }
             }
+        } catch (DuplicateKeyException e) {
+            throw new RuntimeException("Duplicate records! "
+                    + " Some of this file record contains already existing record.");
         } catch (Exception e) {
+            log.error("Batch update failed: ", e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Could not store file " + fileName
-                    + ". Please try again!");
+//                throw new RuntimeException("Could not store file " + fileName
+//                        + " records . Please try again!");
         }
+
     }
 
     @Override

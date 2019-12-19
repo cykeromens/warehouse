@@ -43,4 +43,4 @@ server:
 # application:
 jdbc:
     batch:
-        size: 10000
+      size: 100

@@ -42,7 +42,7 @@ databaseChangeLog:
             name: to_country
             type: varchar(25)
         - column:
-            name: time
+            name: deal_time
             type: datetime
             constraints:
               nullable: false
@@ -54,6 +54,7 @@ databaseChangeLog:
         - column:
             name: uploaded_date
             type: datetime
+            defaultValueComputed: now()
         - column:
             name: source
             type: varchar(255)
@@ -66,5 +67,5 @@ databaseChangeLog:
               nullable: false
     -dropDefaultValue:
       -tableName: deal
-      -columnName: time
+      -columnName: deal_time
       -columnDataType: dateTime

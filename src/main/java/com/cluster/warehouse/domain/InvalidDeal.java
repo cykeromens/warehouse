@@ -30,7 +30,7 @@ public class InvalidDeal implements Serializable {
     @Column(name = "to_iso_code")
     private String toIsoCode;
 
-    @Column(name = "time")
+    @Column(name = "deal_time")
     private ZonedDateTime time;
 
     @Column(name = "amount", precision = 10, scale = 2)

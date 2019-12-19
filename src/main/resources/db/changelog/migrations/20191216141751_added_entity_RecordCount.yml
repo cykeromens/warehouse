@@ -18,12 +18,19 @@ databaseChangeLog:
               primaryKey: true
               nullable: false
         - column:
-            name: currency_iso_code
+            name: from_iso_code
             type: varchar(3)
             constraints:
               unique: true
               nullable: false,
-              uniqueConstraintName: ux_currency_iso_code_id
+              uniqueConstraintName: ux_from_iso_code_id
+        - column:
+            name: to_iso_code
+            type: varchar(3)
+            constraints:
+              unique: true
+              nullable: false,
+              uniqueConstraintName: ux_to_iso_code_id
         - column:
             name: deals_count
             type: bigint
@@ -32,6 +39,7 @@ databaseChangeLog:
         - column:
             name: last_updated
             type: datetime
+            defaultValueComputed: now()
             constraints:
               nullable: false,
     -dropDefaultValue:

@@ -37,7 +37,7 @@ public class Deal implements Serializable {
     private String toIsoCode;
 
     @NotNull
-    @Column(name = "time", nullable = false)
+    @Column(name = "deal_time", nullable = false)
     private ZonedDateTime time;
 
     @NotNull

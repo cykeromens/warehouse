@@ -27,7 +27,7 @@ export class DealResolve implements Resolve<IDeal> {
 
 export const dealRoute: Routes = [
     {
-        path: 'deal',
+        path: '',
         component: DealComponent,
         resolve: {
             pagingParams: JhiResolvePagingParams

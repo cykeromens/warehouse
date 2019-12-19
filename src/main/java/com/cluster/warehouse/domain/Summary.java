@@ -4,6 +4,7 @@ package com.cluster.warehouse.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -37,6 +38,9 @@ public class Summary implements Serializable {
 
     @Column(name = "total_not_valid")
     private Integer totalNotValid;
+
+    @Column(name = "uploaded_date", nullable = false)
+    private LocalDate uploadedDate;
 
     public Long getId() {
         return id;
@@ -107,6 +111,14 @@ public class Summary implements Serializable {
         return this;
     }
 
+    public LocalDate getUploadedDate() {
+        return uploadedDate;
+    }
+
+    public void setUploadedDate(LocalDate uploadedDate) {
+        this.uploadedDate = uploadedDate;
+    }
+
     public void setTotalNotValid(Integer totalNotValid) {
         this.totalNotValid = totalNotValid;
     }
@@ -140,6 +152,7 @@ public class Summary implements Serializable {
                 ", totalImported=" + getTotalImported() +
                 ", totalValid=" + getTotalValid() +
                 ", totalNotValid=" + getTotalNotValid() +
+                "},uploadedDate=" + getUploadedDate() +
                 "}";
     }
 }
