@@ -1,60 +1,41 @@
 # ===================================================================
-# Spring Boot configuration for the "dev" profile.
-#
-# This configuration overrides the application.yml file.
-#
-# ===================================================================
-
-# ===================================================================
 # Standard Spring Boot properties.
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
 logging:
-    level:
-        ROOT: DEBUG
-        com.cluster.warehouse: DEBUG
+  level:
+    ROOT: INFO
+    com.cluster.warehouse: INFO
 
 spring:
-    profiles:
-        active: dev
-    jackson:
-        serialization:
-            indent-output: true
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/warehouse;DB_CLOSE_DELAY=-1
-        username: root
-        password: 12345
-        hikari:
-            poolName: Hikari
-            auto-commit: false
-            maximumPoolSize: 10
-            minimum-idle: 10
-    h2:
-        console:
-            enabled: false
-    jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        database: H2
-        show-sql: true
-        properties:
-            hibernate.id.new_generator_mappings: true
-            hibernate.connection.provider_disables_autocommit: true
-            hibernate.cache.use_second_level_cache: false
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-    liquibase:
-        contexts: dev
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: warehouse-dev
+  thymeleaf:
+    cache: true
 
 server:
-    port: 8080
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+    min-response-size: 1024
 
-# application:
-app:
-  thread:
-    count: 10
-  upload:
-    dir: ./deals/new
-    delimiter: ;
+# ===================================================================
+# Application specific properties for development
+# ===================================================================
+
+application:
+  batch:
+    upload:
+      dir: ./logs/dev
+      batchSize: 10000
+      delimiter: ;

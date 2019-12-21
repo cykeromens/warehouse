@@ -50,7 +50,7 @@ export class InvalidDealComponent implements OnInit, OnDestroy {
             this.invalidDealService
                 .query({
                     page: this.page - 1,
-                    "source.contains": this.currentSearch,
+                    query: this.currentSearch,
                     size: this.itemsPerPage,
                     sort: this.sort()
                 })

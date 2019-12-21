@@ -34,5 +34,15 @@ public interface InvalidDealService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<InvalidDeal> findOne(Long id);
+    Optional<InvalidDeal> findOne(String id);
+
+    /**
+     * Search for the InvalidDeal corresponding to the query.
+     *
+     * @param query    the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<InvalidDeal> search(String query, Pageable pageable);
+
 }

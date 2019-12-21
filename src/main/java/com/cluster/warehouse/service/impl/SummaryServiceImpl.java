@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
  * Service Implementation for managing Summary.
  */
 @Service
-@Transactional
 public class SummaryServiceImpl implements SummaryService {
 
     private final Logger log = LoggerFactory.getLogger(SummaryServiceImpl.class);
@@ -46,7 +44,6 @@ public class SummaryServiceImpl implements SummaryService {
      * @return the list of entities
      */
     @Override
-    @Transactional(readOnly = true)
     public Page<Summary> findAll(Pageable pageable) {
         log.debug("Request to get all Summaries");
         return summaryRepository.findAll(pageable);
@@ -60,9 +57,9 @@ public class SummaryServiceImpl implements SummaryService {
      * @return the entity
      */
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Summary> findOne(Long id) {
+    public Optional<Summary> findOne(String id) {
         log.debug("Request to get Summary : {}", id);
         return summaryRepository.findById(id);
     }
+
 }

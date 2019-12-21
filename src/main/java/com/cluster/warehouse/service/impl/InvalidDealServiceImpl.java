@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
  * Service Implementation for managing InvalidDeal.
  */
 @Service
-@Transactional
 public class InvalidDealServiceImpl implements InvalidDealService {
 
     private final Logger log = LoggerFactory.getLogger(InvalidDealServiceImpl.class);
@@ -46,7 +44,6 @@ public class InvalidDealServiceImpl implements InvalidDealService {
      * @return the list of entities
      */
     @Override
-    @Transactional(readOnly = true)
     public Page<InvalidDeal> findAll(Pageable pageable) {
         log.debug("Request to get all InvalidDeals");
         return invalidDealRepository.findAll(pageable);
@@ -60,9 +57,21 @@ public class InvalidDealServiceImpl implements InvalidDealService {
      * @return the entity
      */
     @Override
-    @Transactional(readOnly = true)
-    public Optional<InvalidDeal> findOne(Long id) {
+    public Optional<InvalidDeal> findOne(String id) {
         log.debug("Request to get InvalidDeal : {}", id);
         return invalidDealRepository.findById(id);
+    }
+
+    /**
+     * Search for the Deal corresponding to the query.
+     *
+     * @param query    the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    @Override
+    public Page<InvalidDeal> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Deals for source file {}", query);
+        return invalidDealRepository.findBySourceContaining(query, pageable);
     }
 }

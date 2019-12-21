@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {JhiAlertService, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
 
-import {ISummary} from 'app/shared/model/summary.model';
+import {ISummary, Summary} from 'app/shared/model/summary.model';
 
 import {ITEMS_PER_PAGE} from 'app/shared';
 import {SummaryService} from './summary.service';
@@ -112,6 +112,14 @@ export class SummaryComponent implements OnInit, OnDestroy {
         return result;
     }
 
+    searchRecord(summary: Summary) {
+        this.router.navigate(['/deal', {
+            page: this.page,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+            query: summary.fileName
+        }]);
+    }
     protected paginateSummaries(data: ISummary[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);

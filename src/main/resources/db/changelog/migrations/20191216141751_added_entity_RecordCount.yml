@@ -40,8 +40,6 @@ databaseChangeLog:
             name: last_updated
             type: datetime
             defaultValueComputed: now()
-            constraints:
-              nullable: false,
     -dropDefaultValue:
       -tableName: record_count
       -columnName: last_updated

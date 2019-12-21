@@ -1,6 +1,13 @@
 package com.cluster.warehouse.domain;
 
-import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -12,60 +19,55 @@ import java.util.Objects;
 /**
  * A Deal.
  */
-@Entity
-@Table(name = "deal")
+@Document(collection = "deal")
 public class Deal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @NotNull
-    @Column(name = "tag_id", nullable = false, unique = true)
+    @Field("tag_id")
+    @Indexed(unique = true)
     private String tagId;
 
     @NotNull
+    @Field("from_iso_code")
     @Size(min = 3, max = 3)
-    @Column(name = "from_iso_code", length = 3, nullable = false)
     private String fromIsoCode;
 
     @NotNull
     @Size(min = 3, max = 3)
-    @Column(name = "to_iso_code", length = 3, nullable = false)
+    @Field("to_iso_code")
     private String toIsoCode;
 
     @NotNull
-    @Column(name = "deal_time", nullable = false)
+    @Field("time")
+    @JsonDeserialize
     private ZonedDateTime time;
 
     @NotNull
-    @Column(name = "amount", precision = 10, scale = 2, nullable = false)
+    @Field("amount")
     private BigDecimal amount;
 
     @NotNull
-    @Column(name = "source", nullable = false)
+    @Field("source")
     private String source;
 
-    @Column(name = "fromCountry", nullable = false)
-    private String fromCountry;
-
-    @Column(name = "toCountry", nullable = false)
-    private String toCountry;
+    @Field("file_type")
+    private String fileType;
 
     @NotNull
-    @Column(name = "source_format", nullable = false)
-    private String sourceFormat;
+    @Field("uploaded_on")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate uploadedOn;
 
-    @Column(name = "uploaded_date", nullable = false)
-    private LocalDate uploadedDate;
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -147,56 +149,30 @@ public class Deal implements Serializable {
         this.source = source;
     }
 
-    public String getSourceFormat() {
-        return sourceFormat;
+    public String getFileType() {
+        return fileType;
     }
 
-    public Deal sourceFormat(String sourceFormat) {
-        this.sourceFormat = sourceFormat;
+    public Deal fileType(String fileType) {
+        this.fileType = fileType;
         return this;
     }
 
-    public void setSourceFormat(String sourceFormat) {
-        this.sourceFormat = sourceFormat;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
-    public String getFromCountry() {
-        return fromCountry;
+    public LocalDate getUploadedOn() {
+        return uploadedOn;
     }
 
-    public Deal fromCountry(String fromCountry) {
-        this.fromCountry = fromCountry;
+    public Deal uploadedOn(LocalDate uploadedOn) {
+        this.uploadedOn = uploadedOn;
         return this;
     }
 
-    public void setFromCountry(String fromCountry) {
-        this.fromCountry = fromCountry;
-    }
-
-    public String getToCountry() {
-        return toCountry;
-    }
-
-    public Deal toCountry(String toCountry) {
-        this.toCountry = toCountry;
-        return this;
-    }
-
-    public void setToCountry(String toCountry) {
-        this.toCountry = toCountry;
-    }
-
-    public LocalDate getUploadedDate() {
-        return uploadedDate;
-    }
-
-    public void setUploadedDate(LocalDate uploadedDate) {
-        this.uploadedDate = uploadedDate;
-    }
-
-    public Deal uploadedDate(LocalDate uploadedDate) {
-        this.uploadedDate = uploadedDate;
-        return this;
+    public void setUploadedOn(LocalDate uploadedOn) {
+        this.uploadedOn = uploadedOn;
     }
 
     @Override
@@ -223,15 +199,14 @@ public class Deal implements Serializable {
     public String toString() {
         return "Deal{" +
                 "id=" + getId() +
-                ", tagId=" + getTagId() +
+                ", tagId='" + getTagId() + "'" +
                 ", fromIsoCode='" + getFromIsoCode() + "'" +
-                ", fromCountry='" + getFromCountry() + "'" +
                 ", toIsoCode='" + getToIsoCode() + "'" +
-                ", toCountry='" + getToCountry() + "'" +
                 ", time='" + getTime() + "'" +
                 ", amount=" + getAmount() +
                 ", source='" + getSource() + "'" +
-                ", sourceFormat='" + getSourceFormat() + "'" +
+                ", fileType='" + getFileType() + "'" +
+                ", uploadedOn='" + getUploadedOn() + "'" +
                 "}";
     }
 }

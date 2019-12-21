@@ -16,24 +16,12 @@ export class SummaryService {
     constructor(protected http: HttpClient) {
     }
 
-    create(summary: ISummary): Observable<EntityResponseType> {
-        return this.http.post<ISummary>(this.resourceUrl, summary, {observe: 'response'});
-    }
-
-    update(summary: ISummary): Observable<EntityResponseType> {
-        return this.http.put<ISummary>(this.resourceUrl, summary, {observe: 'response'});
-    }
-
-    find(id: number): Observable<EntityResponseType> {
+    find(id: string): Observable<EntityResponseType> {
         return this.http.get<ISummary>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http.get<ISummary[]>(this.resourceUrl, {params: options, observe: 'response'});
-    }
-
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 }

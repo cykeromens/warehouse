@@ -9,12 +9,12 @@ import {NgJhipsterModule} from 'ng-jhipster';
 
 import {ErrorHandlerInterceptor} from './blocks/interceptor/errorhandler.interceptor';
 import {NotificationInterceptor} from './blocks/interceptor/notification.interceptor';
-import {ClusterwarehouseSharedModule} from 'app/shared';
-import {ClusterwarehouseAppRoutingModule} from './app-routing.module';
+import {WarehouseSharedModule} from 'app/shared';
+import {WarehouseAppRoutingModule} from './app-routing.module';
 import * as moment from 'moment';
 import {AppMainComponent, ErrorComponent, FooterComponent, NavbarComponent} from './layouts';
-import {ClusterwarehouseHomeModule} from 'app/home';
-import {ClusterwarehouseEntityModule} from 'app/entities/entity.module';
+import {WarehouseHomeModule} from 'app/home';
+import {WarehouseEntityModule} from 'app/entities/entity.module';
 
 @NgModule({
     imports: [
@@ -25,10 +25,10 @@ import {ClusterwarehouseEntityModule} from 'app/entities/entity.module';
             alertAsToast: false,
             alertTimeout: 5000
         }),
-        ClusterwarehouseSharedModule.forRoot(),
-        ClusterwarehouseHomeModule,
-        ClusterwarehouseEntityModule,
-        ClusterwarehouseAppRoutingModule
+        WarehouseSharedModule.forRoot(),
+        WarehouseHomeModule,
+        WarehouseEntityModule,
+        WarehouseAppRoutingModule
     ],
     declarations: [AppMainComponent, NavbarComponent, ErrorComponent, FooterComponent],
     providers: [
@@ -45,7 +45,7 @@ import {ClusterwarehouseEntityModule} from 'app/entities/entity.module';
     ],
     bootstrap: [AppMainComponent]
 })
-export class ClusterwarehouseAppModule {
+export class WarehouseAppModule {
     constructor(private dpConfig: NgbDatepickerConfig) {
         this.dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };
     }

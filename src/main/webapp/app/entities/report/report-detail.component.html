@@ -1,0 +1,39 @@
+<div class="container card">
+    <div class="col-8 card-body">
+        <div *ngIf="report">
+            <h2><span>Report</span> {{report.id}}</h2>
+            <hr>
+            <app-alert-error></app-alert-error>
+            <dl class="row-md">
+                <dt><span>From Iso Code</span></dt>
+                <dd>
+                    <span>{{report.fromIsoCode}}</span>
+                </dd>
+                <dt><span>To Iso Code</span></dt>
+                <dd>
+                    <span>{{report.toIsoCode}}</span>
+                </dd>
+                <dt><span>Total</span></dt>
+                <dd>
+                    <span>{{report.total}}</span>
+                </dd>
+                <dt><span>Last Updated</span></dt>
+                <dd>
+                    <span>{{report.lastUpdated}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/report', report.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -6,23 +6,23 @@ import {RouterModule} from '@angular/router';
         RouterModule.forChild([
             {
                 path: 'deal',
-                loadChildren: './deal/deal.module#ClusterwarehouseDealModule'
+                loadChildren: './deal/deal.module#WarehouseDealModule'
             },
             {
                 path: 'deal',
-                loadChildren: './deal/deal.module#ClusterwarehouseDealModule'
+                loadChildren: './deal/deal.module#WarehouseDealModule'
             },
             {
                 path: 'invalid-deal',
-                loadChildren: './invalid-deal/invalid-deal.module#ClusterwarehouseInvalidDealModule'
-            },
-            {
-                path: 'record-count',
-                loadChildren: './record-count/record-count.module#ClusterwarehouseRecordCountModule'
+                loadChildren: './invalid-deal/invalid-deal.module#WarehouseInvalidDealModule'
             },
             {
                 path: 'summary',
-                loadChildren: './summary/summary.module#ClusterwarehouseSummaryModule'
+                loadChildren: './summary/summary.module#WarehouseSummaryModule'
+            },
+            {
+                path: 'report',
+                loadChildren: './report/report.module#ClusterReportModule'
             }
         ])
     ],
@@ -31,5 +31,5 @@ import {RouterModule} from '@angular/router';
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ClusterwarehouseEntityModule {
+export class WarehouseEntityModule {
 }

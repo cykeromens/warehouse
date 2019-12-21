@@ -1,7 +1,12 @@
 package com.cluster.warehouse.domain;
 
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,43 +15,45 @@ import java.util.Objects;
 /**
  * A Summary.
  */
-@Entity
-@Table(name = "summary")
+@Document(collection = "summary")
 public class Summary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	private String id;
 
     @NotNull
-    @Column(name = "file_name", nullable = false, unique = true)
-    private String fileName;
+	@Field("file_name")
+	@Indexed(unique = true)
+	private String fileName;
 
     @NotNull
-    @Column(name = "process_duration", nullable = false)
-    private Double processDuration;
+	@Field("duration")
+	private Double duration;
+
+	@NotNull
+	@Field("total")
+	private Long total;
 
     @NotNull
-    @Column(name = "total_imported", nullable = false)
-    private Integer totalImported;
+	@Field("valid")
+	private Long valid;
 
     @NotNull
-    @Column(name = "total_valid", nullable = false)
-    private Integer totalValid;
+	@Field("invalid")
+	private Long invalid;
 
-    @Column(name = "total_not_valid")
-    private Integer totalNotValid;
+	@NotNull
+	@Field("date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate date;
 
-    @Column(name = "uploaded_date", nullable = false)
-    private LocalDate uploadedDate;
-
-    public Long getId() {
+	public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+	public void setId(String id) {
         this.id = id;
     }
 
@@ -63,64 +70,69 @@ public class Summary implements Serializable {
         this.fileName = fileName;
     }
 
-    public Double getProcessDuration() {
-        return processDuration;
+	public Double getDuration() {
+		return duration;
     }
 
-    public Summary processDuration(Double processDuration) {
-        this.processDuration = processDuration;
+	public Summary duration(Double duration) {
+		this.duration = duration;
         return this;
     }
 
-    public void setProcessDuration(Double processDuration) {
-        this.processDuration = processDuration;
+	public void setDuration(Double duration) {
+		this.duration = duration;
     }
 
-    public Integer getTotalImported() {
-        return totalImported;
+	public Long getTotal() {
+		return total;
     }
 
-    public Summary totalImported(Integer totalImported) {
-        this.totalImported = totalImported;
+	public Summary total(Long total) {
+		this.total = total;
         return this;
     }
 
-    public void setTotalImported(Integer totalImported) {
-        this.totalImported = totalImported;
+	public void setTotal(Long total) {
+		this.total = total;
     }
 
-    public Integer getTotalValid() {
-        return totalValid;
+	public Long getValid() {
+		return valid;
     }
 
-    public Summary totalValid(Integer totalValid) {
-        this.totalValid = totalValid;
+	public Summary valid(Long valid) {
+		this.valid = valid;
         return this;
     }
 
-    public void setTotalValid(Integer totalValid) {
-        this.totalValid = totalValid;
+	public void setValid(Long valid) {
+		this.valid = valid;
     }
 
-    public Integer getTotalNotValid() {
-        return totalNotValid;
+	public Long getInvalid() {
+		return invalid;
     }
 
-    public Summary totalNotValid(Integer totalNotValid) {
-        this.totalNotValid = totalNotValid;
+	public Summary invalid(Long invalid) {
+		this.invalid = invalid;
         return this;
     }
 
-    public LocalDate getUploadedDate() {
-        return uploadedDate;
+	public void setInvalid(Long invalid) {
+		this.invalid = invalid;
+	}
+
+	public LocalDate getDate() {
+		return date;
     }
 
-    public void setUploadedDate(LocalDate uploadedDate) {
-        this.uploadedDate = uploadedDate;
+	public Summary date(LocalDate date) {
+		this.date = date;
+		return this;
     }
 
-    public void setTotalNotValid(Integer totalNotValid) {
-        this.totalNotValid = totalNotValid;
+	public void setDate(LocalDate date) {
+		this.date = date;
     }
 
     @Override
@@ -146,13 +158,13 @@ public class Summary implements Serializable {
     @Override
     public String toString() {
         return "Summary{" +
-                "id=" + getId() +
-                ", fileName='" + getFileName() + "'" +
-                ", processDuration=" + getProcessDuration() +
-                ", totalImported=" + getTotalImported() +
-                ", totalValid=" + getTotalValid() +
-                ", totalNotValid=" + getTotalNotValid() +
-                "},uploadedDate=" + getUploadedDate() +
-                "}";
+				"id=" + getId() +
+				", fileName='" + getFileName() + "'" +
+				", duration=" + getDuration() +
+				", total=" + getTotal() +
+				", valid=" + getValid() +
+				", invalid=" + getInvalid() +
+				", date='" + getDate() + "'" +
+				"}";
     }
 }

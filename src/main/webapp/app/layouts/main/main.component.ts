@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRouteSnapshot, NavigationEnd, NavigationError, Router} from '@angular/router';
 
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-main',
@@ -11,7 +11,7 @@ export class AppMainComponent implements OnInit {
     constructor(private titleService: Title, private router: Router) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
-        let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'clusterwarehouseApp';
+        let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'warehouseApp';
         if (routeSnapshot.firstChild) {
             title = this.getPageTitle(routeSnapshot.firstChild) || title;
         }

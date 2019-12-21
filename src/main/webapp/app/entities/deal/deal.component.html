@@ -26,7 +26,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                    <th jhiSortBy="id"><span>ID</span>
+                    <th jhiSortBy="tagId"><span>Tag</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
                     <th jhiSortBy="fromIsoCode"><span>From Iso Code</span>
@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let deal of deals ;trackBy: trackId">
-                    <td><a [routerLink]="['/deal', deal.id, 'view' ]">{{deal.id}}</a></td>
+                    <td><a [routerLink]="['/deal', deal.id, 'view' ]">{{deal.tagId}}</a></td>
                     <td>{{deal.fromIsoCode}}</td>
                     <td>{{deal.toIsoCode}}</td>
                     <td>{{deal.amount}}</td>

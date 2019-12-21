@@ -1,20 +1,24 @@
+import {Moment} from 'moment';
+
 export interface ISummary {
-    id?: number;
+    id?: string;
     fileName?: string;
-    processDuration?: number;
-    totalImported?: number;
-    totalValid?: number;
-    totalNotValid?: number;
+    duration?: number;
+    total?: number;
+    valid?: number;
+    invalid?: number;
+    date?: Moment;
 }
 
 export class Summary implements ISummary {
     constructor(
-        public id?: number,
+        public id?: string,
         public fileName?: string,
-        public processDuration?: number,
-        public totalImported?: number,
-        public totalValid?: number,
-        public totalNotValid?: number
+        public duration?: number,
+        public total?: number,
+        public valid?: number,
+        public invalid?: number,
+        public date?: Moment
     ) {
     }
 }

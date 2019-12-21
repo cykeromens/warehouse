@@ -1,21 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 
-import { NgbDateMomentAdapter } from './util/datepicker-adapter';
-import { ClusterwarehouseSharedLibsModule, ClusterwarehouseSharedCommonModule } from './';
+import {NgbDateMomentAdapter} from './util/datepicker-adapter';
+import {WarehouseSharedCommonModule, WarehouseSharedLibsModule} from './';
 
 @NgModule({
-    imports: [ClusterwarehouseSharedLibsModule, ClusterwarehouseSharedCommonModule],
+    imports: [WarehouseSharedLibsModule, WarehouseSharedCommonModule],
     declarations: [],
     providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }],
     entryComponents: [],
-    exports: [ClusterwarehouseSharedCommonModule],
+    exports: [WarehouseSharedCommonModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ClusterwarehouseSharedModule {
+export class WarehouseSharedModule {
     static forRoot() {
         return {
-            ngModule: ClusterwarehouseSharedModule
+            ngModule: WarehouseSharedModule
         };
     }
 }

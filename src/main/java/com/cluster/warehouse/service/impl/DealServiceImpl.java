@@ -1,17 +1,15 @@
 package com.cluster.warehouse.service.impl;
 
+import com.cluster.warehouse.config.ApplicationProperties;
 import com.cluster.warehouse.domain.Deal;
 import com.cluster.warehouse.repository.DealRepository;
 import com.cluster.warehouse.service.DealService;
-import com.cluster.warehouse.service.dealpool.ForkJoinService;
+import com.cluster.warehouse.service.pool.ForkJoinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,38 +27,22 @@ import java.util.Optional;
  * Service Implementation for managing Deal.
  */
 @Service
-@Transactional
 public class DealServiceImpl implements DealService {
 
     private final Logger log = LoggerFactory.getLogger(DealServiceImpl.class);
 
-    @Value("${app.upload.delimiter}")
-    private final static String DELIMITER = ";";
-    @Value("${app.upload.dir}")
-    private String uploadDir = "./";
-    @Value("${app.thread.count}")
-    private static final int CONCURRENCY_COUNT = 10;
-
-
+    private final String UPLOAD_DIR;
 
     private final DealRepository dealRepository;
     private final ForkJoinService forkJoinService;
 
-    public DealServiceImpl(DealRepository dealRepository, ForkJoinService forkJoinService) {
+    public DealServiceImpl(DealRepository dealRepository,
+                           ForkJoinService forkJoinService,
+                           ApplicationProperties properties
+    ) {
         this.dealRepository = dealRepository;
         this.forkJoinService = forkJoinService;
-    }
-
-    /**
-     * Save a deal.
-     *
-     * @param deal the entity to save
-     * @return the persisted entity
-     */
-    @Override
-    public Deal save(Deal deal) {
-        log.debug("Request to save Deal : {}", deal);
-        return dealRepository.save(deal);
+        this.UPLOAD_DIR = properties.getBatch().getUpload().getDir();
     }
 
     /**
@@ -68,11 +52,11 @@ public class DealServiceImpl implements DealService {
      * @return the list of entities
      */
     @Override
-    @Transactional(readOnly = true)
     public Page<Deal> findAll(Pageable pageable) {
         log.debug("Request to get all Deals");
         return dealRepository.findAll(pageable);
     }
+
 
     /**
      * Get one deal by id.
@@ -81,8 +65,7 @@ public class DealServiceImpl implements DealService {
      * @return the entity
      */
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Deal> findOne(Long id) {
+    public Optional<Deal> findOne(String id) {
         log.debug("Request to get Deal : {}", id);
         return dealRepository.findById(id);
     }
@@ -92,40 +75,42 @@ public class DealServiceImpl implements DealService {
      *
      * @param file the entity to save
      */
-    public void uploadFile(MultipartFile file) throws RuntimeException {
-        log.debug("Request to upload file to path: {}", uploadDir);
-        File dir = new File(uploadDir);
+    public Map<String, Integer> uploadFile(MultipartFile file) {
+        log.debug("Request to upload file to path: {}", UPLOAD_DIR);
+        Map<String, Integer> result = new HashMap<>();
         String fileName = file.getOriginalFilename();
-        Path location = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(
-                Objects.requireNonNull(fileName)));
+        File dir = new File(UPLOAD_DIR);
         try {
             boolean dirExists = dir.exists() || dir.mkdir();
-            if (dirExists) {
-                log.debug("Coping file to directory");
-                long copy = Files.copy(file.getInputStream(), location, StandardCopyOption.REPLACE_EXISTING);
-                if (copy > 0) {
-                    log.debug("File copied, forkjoin processing");
-                    forkJoinService.fileToDatabase(location);
-                    log.debug("Finished processing file.");
-                }
-            }
-        } catch (DuplicateKeyException e) {
-            throw new RuntimeException("Duplicate records! "
-                    + " Some of this file record contains already existing record.");
+            Path location = Paths.get(UPLOAD_DIR, File.separator, StringUtils.cleanPath(
+                    Objects.requireNonNull(fileName)));
+            Files.copy(file.getInputStream(), location, StandardCopyOption.REPLACE_EXISTING);
+            return forkJoinService.beginProcess(file, location);
         } catch (Exception e) {
-            log.error("Batch update failed: ", e.getMessage());
-            e.printStackTrace();
-//                throw new RuntimeException("Could not store file " + fileName
-//                        + " records . Please try again!");
+            result.put("not-created", 500);
         }
+        return result;
 
     }
 
     @Override
     public boolean exists(String fileName) {
-        Path location = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(
+        Path location = Paths.get(UPLOAD_DIR + File.separator + StringUtils.cleanPath(
                 Objects.requireNonNull(fileName)));
         return location.toFile().exists();
+    }
+
+    /**
+     * Search for the Deal corresponding to the query.
+     *
+     * @param query    the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    @Override
+    public Page<Deal> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Deals for source file {}", query);
+        return dealRepository.findBySourceContaining(query, pageable);
     }
 
 }

@@ -34,5 +34,5 @@ public interface SummaryService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<Summary> findOne(Long id);
+    Optional<Summary> findOne(String id);
 }

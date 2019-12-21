@@ -1,6 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
-import { JhiEventManager, JhiAlert, JhiAlertService } from 'ng-jhipster';
-import { Subscription } from 'rxjs';
+import {Component, OnDestroy} from '@angular/core';
+import {JhiAlert, JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-alert-error',
@@ -21,7 +21,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
         /* tslint:enable */
         this.alerts = [];
 
-        this.cleanHttpErrorListener = eventManager.subscribe('clusterwarehouseApp.httpError', response => {
+        this.cleanHttpErrorListener = eventManager.subscribe('warehouseApp.httpError', response => {
             let i;
             const httpErrorResponse = response.content;
             switch (httpErrorResponse.status) {

@@ -1,18 +1,13 @@
 package com.cluster.warehouse.web.rest;
 
 import com.cluster.warehouse.domain.Deal;
-import com.cluster.warehouse.service.DealQueryService;
 import com.cluster.warehouse.service.DealService;
-import com.cluster.warehouse.service.FileProcessorService;
-import com.cluster.warehouse.service.dto.DealCriteria;
 import com.cluster.warehouse.web.rest.errors.BadRequestAlertException;
-import com.cluster.warehouse.web.rest.errors.FileExistAlertException;
+import com.cluster.warehouse.web.rest.errors.InternalServerErrorException;
 import com.cluster.warehouse.web.rest.util.HeaderUtil;
 import com.cluster.warehouse.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -20,9 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,25 +32,21 @@ public class DealResource {
 
     private final DealService dealService;
 
-    @Autowired
-    private FileProcessorService fileProcessorService;
 
-    private final DealQueryService dealQueryService;
-
-    public DealResource(DealService dealService, DealQueryService dealQueryService) {
+    public DealResource(DealService dealService) {
         this.dealService = dealService;
-        this.dealQueryService = dealQueryService;
     }
+
 
     /**
      * POST  /deals uploads file to a path.
      *
      * @param file the file to upload
      * @return the ResponseEntity with status 200 (Ok) and with body the new fileLoader, or with status 400 (Bad Request) if the fileLoader has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws InternalServerErrorException if the Location URI syntax is incorrect
      */
     @PostMapping("/deals")
-    public ResponseEntity<String> createFileLoader(@RequestPart("file") MultipartFile file) throws FileExistAlertException {
+    public ResponseEntity<Map<String, Integer>> uploadDeal(@RequestPart("file") MultipartFile file) throws InternalServerErrorException {
         log.debug("REST request to save file  : {}", file);
         if (file.getOriginalFilename() == null) {
             throw new BadRequestAlertException("File cannot be empty!", ENTITY_NAME, "idexists");
@@ -64,63 +54,30 @@ public class DealResource {
         if (dealService.exists(file.getOriginalFilename())) {
             throw new BadRequestAlertException("Duplicates not allowed! File already uploaded.", ENTITY_NAME, "duplicate");
         }
-        dealService.uploadFile(file);
-
-//        return null;//ResponseEntity.created(new URI("/api/file-loaders/" + result.getId()))
-//                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-//                .body(result);
-//        redirectAttributes.addFlashAttribute("message",
-//                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return ResponseEntity.ok().build();
-    }
-
-    /**
-     * PUT  /deals : Updates an existing deal.
-     *
-     * @param deal the deal to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated deal,
-     * or with status 400 (Bad Request) if the deal is not valid,
-     * or with status 500 (Internal Server Error) if the deal couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/deals")
-    public ResponseEntity<Deal> updateDeal(@Valid @RequestBody Deal deal) throws URISyntaxException {
-        log.debug("REST request to update Deal : {}", deal);
-        if (deal.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        Map<String, Integer> result = dealService.uploadFile(file);
+        if (result.containsKey("error")) {
+            throw new BadRequestAlertException("Could not read file records", file.getName(), "error");
         }
-        Deal result = dealService.save(deal);
+        if (result.containsKey("not-created")) {
+            throw new BadRequestAlertException("Could not upload file", file.getName(), "error");
+        }
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, deal.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createFileUploadAlert(result, file.getName()))
+                .body(result);
     }
 
     /**
      * GET  /deals : get all the deals.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of deals in body
      */
     @GetMapping("/deals")
-    public ResponseEntity<List<Deal>> getAllDeals(DealCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Deals by criteria: {}", criteria);
-        Page<Deal> page = dealQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<Deal>> getAllDeals(Pageable pageable) {
+        log.debug("REST request to get a page of Deals");
+        Page<Deal> page = dealService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /deals/count : count all the deals.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/deals/count")
-    public ResponseEntity<Long> countDeals(DealCriteria criteria) {
-        log.debug("REST request to count Deals by criteria: {}", criteria);
-        return ResponseEntity.ok().body(dealQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -130,9 +87,26 @@ public class DealResource {
      * @return the ResponseEntity with status 200 (OK) and with body the deal, or with status 404 (Not Found)
      */
     @GetMapping("/deals/{id}")
-    public ResponseEntity<Deal> getDeal(@PathVariable Long id) {
+    public ResponseEntity<Deal> getDeal(@PathVariable String id) {
         log.debug("REST request to get Deal : {}", id);
         Optional<Deal> deal = dealService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(deal);
+        return deal.map(deal1 -> ResponseEntity.ok().body(deal1)).orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
+
+    /**
+     * {@code SEARCH  /_search/deals?query=:query} : search for the Deal corresponding
+     * to the query.
+     *
+     * @param query    the query of the approvalLog search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
+     */
+    @GetMapping("/_search/deals")
+    public ResponseEntity<List<Deal>> searchApprovalLogs(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of ApprovalLogs for query {}", query);
+        Page<Deal> page = dealService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

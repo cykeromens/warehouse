@@ -82,11 +82,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     save() {
         this.isSaving = true;
-        this.subscribeToSaveResponse(this.dealService.create(this.fileToUpload));
-
+        this.subscribeToSaveResponse(this.dealService.upload(this.fileToUpload));
     }
 
-    protected subscribeToSaveResponse(result: Observable<HttpResponse<IFileLoader>>) {
+    protected subscribeToSaveResponse(result: Observable<HttpResponse<any>>) {
         result.subscribe((res: HttpResponse<IFileLoader>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
     }
 
@@ -151,5 +150,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     protected onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    searchRecord(summary: Summary) {
+        this.router.navigate(['/deal', {
+            page: this.page,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+            query: summary.fileName
+        }]);
     }
 }

@@ -61,29 +61,24 @@
         </div>
     </section>
 
-    <div *ngIf="summaries.length > 0" class="album py-5 bg-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4" *ngFor="let summary of summaries ;trackBy: trackId">
-                        <div class="card mb-4 shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                            <div class="card-body">
-                                <p class="card-text"> {{summary.fileName}}</p>
-                                <div class="">
-                                    Total Imported<span class="">{{summary.totalImported}}</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">
-                                            {{summary.totalValid}}
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </div>
-                                    <small class="text-muted">{{summary.processDuration}} sec</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card col-4 mb-4 shadow-sm" *ngFor="let summary of summaries ;trackBy: trackId">
+                <div class="card-header">
+                    <h6 class="">{{summary.date | date: "fullDate"}}</h6>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title pricing-card-title">{{summary.fileName}}</h3>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Valid - {{summary.total}}</li>
+                        <li>Invalid - {{summary.invalid}}</li>
+                        <li>Total - {{summary.total}}</li>
+                        <li>Duration - {{summary.duration | number}} sec</li>
+                    </ul>
+                    <button type="button" (click)="searchRecord(summary)"
+                            class="btn btn-lg btn-block btn-outline-primary">View Report
+                    </button>
                 </div>
             </div>
         </div>
+    </div>

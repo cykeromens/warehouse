@@ -3,7 +3,6 @@ package com.cluster.warehouse.web.rest;
 import com.cluster.warehouse.domain.Summary;
 import com.cluster.warehouse.service.SummaryService;
 import com.cluster.warehouse.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -56,9 +55,10 @@ public class SummaryResource {
      * @return the ResponseEntity with status 200 (OK) and with body the summary, or with status 404 (Not Found)
      */
     @GetMapping("/summaries/{id}")
-    public ResponseEntity<Summary> getSummary(@PathVariable Long id) {
+    public ResponseEntity<Summary> getSummary(@PathVariable String id) {
         log.debug("REST request to get Summary : {}", id);
         Optional<Summary> summary = summaryService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(summary);
+        return summary.map(summary1 -> ResponseEntity.ok().body(summary1)).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 }

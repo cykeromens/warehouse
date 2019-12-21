@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { ClusterwarehouseSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent } from './';
+import {JhiAlertComponent, JhiAlertErrorComponent, WarehouseSharedLibsModule} from './';
 
 @NgModule({
-    imports: [ClusterwarehouseSharedLibsModule],
+    imports: [WarehouseSharedLibsModule],
     declarations: [JhiAlertComponent, JhiAlertErrorComponent],
-    exports: [ClusterwarehouseSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent]
+    exports: [WarehouseSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent]
 })
-export class ClusterwarehouseSharedCommonModule {}
+export class WarehouseSharedCommonModule {
+}

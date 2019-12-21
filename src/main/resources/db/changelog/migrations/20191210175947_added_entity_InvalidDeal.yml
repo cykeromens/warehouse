@@ -33,7 +33,7 @@ databaseChangeLog:
             name: to_country
             type: varchar(25)
         - column:
-              name: deal_time
+            name: deal_time
             type: datetime
         - column:
             name: amount
@@ -48,9 +48,9 @@ databaseChangeLog:
             name: reason
             type: varchar(255)
         - column:
-              name: uploaded_date
-              type: datetime
-              defaultValueComputed: now()
+            name: uploaded_date
+            type: datetime
+            defaultValueComputed: now()
     -dropDefaultValue:
       -tableName: invalid_deal
       -columnName: deal_time

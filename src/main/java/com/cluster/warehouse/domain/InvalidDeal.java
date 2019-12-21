@@ -1,7 +1,11 @@
 package com.cluster.warehouse.domain;
 
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,44 +15,61 @@ import java.util.Objects;
 /**
  * A InvalidDeal.
  */
-@Entity
-@Table(name = "invalid_deal")
+@Document(collection = "invalid_deal")
 public class InvalidDeal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "tag_id")
+    @Field("tag_id")
     private String tagId;
 
-    @Column(name = "from_iso_code")
+    @Field("from_iso_code")
     private String fromIsoCode;
 
-    @Column(name = "to_iso_code")
+    @Field("to_iso_code")
     private String toIsoCode;
 
-    @Column(name = "deal_time")
+    @Field("time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm'Z'")
     private ZonedDateTime time;
 
-    @Column(name = "amount", precision = 10, scale = 2)
+    @Field("amount")
     private BigDecimal amount;
 
-    @Column(name = "source")
+    @Field("source")
     private String source;
 
-    @Column(name = "source_format")
-    private String sourceFormat;
+    @Field("file_type")
+    private String fileType;
 
-    @Column(name = "reason")
+    @Field("uploaded_on")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate uploadedOn;
+
+    @Field("reason")
     private String reason;
 
-    @Column(name = "uploaded_date", nullable = false)
-    private LocalDate uploadedDate;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTagId() {
+        return tagId;
+    }
 
     public InvalidDeal() {
+    }
+
+    public InvalidDeal tagId(String tagId) {
+        this.tagId = tagId;
+        return this;
     }
 
     public InvalidDeal(Deal deal, String reason) {
@@ -58,26 +79,9 @@ public class InvalidDeal implements Serializable {
         this.time = deal.getTime();
         this.amount = deal.getAmount();
         this.source = deal.getSource();
-        this.sourceFormat = deal.getSourceFormat();
         this.reason = reason;
-        this.uploadedDate = deal.getUploadedDate();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTagId() {
-        return tagId;
-    }
-
-    public InvalidDeal tagId(String tagId) {
-        this.tagId = tagId;
-        return this;
+        this.uploadedOn = deal.getUploadedOn();
+        this.fileType = deal.getFileType();
     }
 
     public void setTagId(String tagId) {
@@ -149,17 +153,30 @@ public class InvalidDeal implements Serializable {
         this.source = source;
     }
 
-    public String getSourceFormat() {
-        return sourceFormat;
+    public String getFileType() {
+        return fileType;
     }
 
-    public InvalidDeal sourceFormat(String sourceFormat) {
-        this.sourceFormat = sourceFormat;
+    public InvalidDeal fileType(String fileType) {
+        this.fileType = fileType;
         return this;
     }
 
-    public void setSourceFormat(String sourceFormat) {
-        this.sourceFormat = sourceFormat;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public LocalDate getUploadedOn() {
+        return uploadedOn;
+    }
+
+    public InvalidDeal uploadedOn(LocalDate uploadedOn) {
+        this.uploadedOn = uploadedOn;
+        return this;
+    }
+
+    public void setUploadedOn(LocalDate uploadedOn) {
+        this.uploadedOn = uploadedOn;
     }
 
     public String getReason() {
@@ -173,14 +190,6 @@ public class InvalidDeal implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
-    }
-
-    public LocalDate getUploadedDate() {
-        return uploadedDate;
-    }
-
-    public void setUploadedDate(LocalDate uploadedDate) {
-        this.uploadedDate = uploadedDate;
     }
 
     @Override
@@ -207,15 +216,14 @@ public class InvalidDeal implements Serializable {
     public String toString() {
         return "InvalidDeal{" +
                 "id=" + getId() +
-                ", tagId=" + getTagId() +
+                ", tagId='" + getTagId() + "'" +
                 ", fromIsoCode='" + getFromIsoCode() + "'" +
                 ", toIsoCode='" + getToIsoCode() + "'" +
                 ", time='" + getTime() + "'" +
                 ", amount=" + getAmount() +
                 ", source='" + getSource() + "'" +
-                ", sourceFormat='" + getSourceFormat() + "'" +
-                ", reason='" + getReason() + "'" +
-                ", uploadedDate='" + getUploadedDate() + "'" +
+                ", fileType='" + getFileType() + "'" +
+                ", uploadedOn='" + getUploadedOn() + "'" +
                 "}";
     }
 }

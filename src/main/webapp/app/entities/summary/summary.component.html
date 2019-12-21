@@ -31,14 +31,14 @@
                     <tbody>
                     <tr *ngFor="let summary of summaries ;trackBy: trackId">
                         <td>{{summary.fileName}}</td>
-                        <td>{{summary.processDuration}}</td>
-                        <td>{{summary.totalImported}}</td>
-                        <td>{{summary.totalValid}}</td>
-                        <td>{{summary.totalNotValid}}</td>
+                        <td>{{summary.duration}}</td>
+                        <td>{{summary.total}}</td>
+                        <td>{{summary.valid}}</td>
+                        <td>{{summary.invalid}}</td>
                         <td class="text-right">
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
-                                        [routerLink]="['/summary', summary.id, 'view' ]"
+                                        (click)="searchRecord(summary)"
                                         class="btn btn-info btn-sm">
                                     <fa-icon [icon]="'eye'"></fa-icon>
                                     <span class="d-none d-md-inline">View</span>

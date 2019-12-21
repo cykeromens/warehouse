@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
+import java.util.Map;
+
 /**
  * Utility class for HTTP headers creation.
  */
@@ -27,12 +29,22 @@ public final class HeaderUtil {
         return createAlert("A new " + entityName + " is created with identifier " + param, param);
     }
 
+	public static HttpHeaders createFileUploadAlert(Map<String, Integer> result, String param) {
+		int invalid = result.get("invalid");
+		int valid = result.get("valid");
+		int total = invalid + valid;
+		if (result.size() > 2) {
+			return createAlert("This file " + param + " has been uploaded before. Valid: " +
+					valid + " Invalid: " +
+					invalid, param);
+		}
+		return createAlert("Total file count: " + total + " Valid: " +
+				valid + " Invalid: " +
+				invalid, param);
+	}
+
     public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
         return createAlert("A " + entityName + " is updated with identifier " + param, param);
-    }
-
-    public static HttpHeaders createEntityDeletionAlert(String entityName, String param) {
-        return createAlert("A " + entityName + " is deleted with identifier " + param, param);
     }
 
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {

@@ -49,7 +49,7 @@ export class DealComponent implements OnInit, OnDestroy {
             this.dealService
                 .query({
                     page: this.page - 1,
-                    'source.contains': this.currentSearch,
+                    query: this.currentSearch,
                     size: this.itemsPerPage,
                     sort: this.sort()
                 })
