@@ -14,6 +14,7 @@ type EntityArrayResponseType = HttpResponse<IDeal[]>;
 @Injectable({ providedIn: 'root' })
 export class DealService {
     public resourceUrl = SERVER_API_URL + 'api/deals';
+    public resourceSearchUrl = SERVER_API_URL + 'api/_search/deals';
 
     constructor(protected http: HttpClient) {}
 
@@ -35,6 +36,13 @@ export class DealService {
         const options = createRequestOption(req);
         return this.http
             .get<IDeal[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
+    search(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http
+            .get<IDeal[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
             .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 

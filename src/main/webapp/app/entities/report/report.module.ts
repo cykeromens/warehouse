@@ -1,7 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
-import {ReportComponent, ReportDetailComponent, reportRoute,} from './';
+import {ReportComponent, ReportDetailComponent, reportRoute} from './';
 import {WarehouseSharedModule} from 'app/shared';
 
 const ENTITY_STATES = [...reportRoute];

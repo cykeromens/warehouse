@@ -10,6 +10,7 @@ export interface IInvalidDeal {
     source?: string;
     fileType?: string;
     uploadedOn?: Moment;
+    reason?: string;
 }
 
 export class InvalidDeal implements IInvalidDeal {
@@ -22,7 +23,9 @@ export class InvalidDeal implements IInvalidDeal {
         public amount?: number,
         public source?: string,
         public fileType?: string,
-        public uploadedOn?: Moment
+        public uploadedOn?: Moment,
+        public reason?: string,
+
     ) {
     }
 }

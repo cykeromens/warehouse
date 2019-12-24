@@ -2,24 +2,31 @@ package com.cluster.warehouse.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Objects;
+
+import static com.cluster.warehouse.config.Constants.DATETIME_FORMAT;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 /**
  * A Deal.
  */
 @Document(collection = "deal")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(NON_EMPTY)
 public class Deal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,11 +51,11 @@ public class Deal implements Serializable {
 
     @NotNull
     @Field("time")
-    @JsonDeserialize
-    private ZonedDateTime time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATETIME_FORMAT)
+    private Date time;
 
     @NotNull
-    @Field("amount")
+    @Field(name = "amount", targetType = FieldType.DECIMAL128)
     private BigDecimal amount;
 
     @NotNull
@@ -60,7 +67,6 @@ public class Deal implements Serializable {
 
     @NotNull
     @Field("uploaded_on")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate uploadedOn;
 
     public String getId() {
@@ -110,16 +116,16 @@ public class Deal implements Serializable {
         this.toIsoCode = toIsoCode;
     }
 
-    public ZonedDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public Deal time(ZonedDateTime time) {
+    public Deal time(Date time) {
         this.time = time;
         return this;
     }
 
-    public void setTime(ZonedDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

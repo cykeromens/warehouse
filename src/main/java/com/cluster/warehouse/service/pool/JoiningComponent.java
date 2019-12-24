@@ -2,81 +2,94 @@ package com.cluster.warehouse.service.pool;
 
 import com.cluster.warehouse.domain.Deal;
 import com.cluster.warehouse.domain.InvalidDeal;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.cluster.warehouse.repository.DealRepository;
+import com.cluster.warehouse.repository.InvalidDealRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FilenameUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.BulkOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.cluster.warehouse.config.Constants.INVALID_COUNT;
+import static com.cluster.warehouse.config.Constants.VALID_COUNT;
+import static com.cluster.warehouse.service.pool.ForkJoinService.extension;
+import static com.cluster.warehouse.service.pool.ForkJoinService.fileName;
 
 @Component
 public class JoiningComponent {
 
     private final Logger log = LoggerFactory.getLogger(JoiningComponent.class);
 	final private ObjectMapper mapper;
-	final private MongoTemplate mongoTemplate;
+	//	final private DealRepository dealRepository;
+	final private InvalidDealRepository invalidDealRepository;
 
-	public JoiningComponent(ObjectMapper mapper, MongoTemplate mongoTemplate) {
+	public JoiningComponent(ObjectMapper mapper,
+							InvalidDealRepository invalidDealRepository,
+							DealRepository dealRepository) {
 		this.mapper = mapper;
-		this.mongoTemplate = mongoTemplate;
-    }
+//		this.dealRepository = dealRepository;
+		this.invalidDealRepository = invalidDealRepository;
+	}
 
-	synchronized Map<String, Integer> executeBatch(List<Map<?, ?>> dealsMap, Path path) {
-		AtomicInteger failedCount = new AtomicInteger();
-		AtomicInteger affectedCount = new AtomicInteger();
-        Map<String, Integer> result = new HashMap<>();
+	synchronized Map<String, Integer> executeBatch(List<Map<String, String>> dealsMap) {
+		log.info("About to process set with size: {}", dealsMap.size());
+		Map<String, Integer> result = new HashMap<>();
+		result.put(VALID_COUNT, 0);
+		result.put(INVALID_COUNT, 0);
 
-		try {
-			Path fileName = path.getFileName();
-			String extension = FilenameUtils.getExtension(fileName.toString());
-			log.info("About to save batch.");
-			String jsonString = mapper.writeValueAsString(dealsMap);
-			List<Deal> deals = mapper.readValue(jsonString, new TypeReference<List<Deal>>() {
-			});
-			BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, Deal.class);
-			BulkOperations bulkOpsInvalid = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, InvalidDeal.class);
+		List<Deal> validDeals = new ArrayList<>();
+		List<InvalidDeal> invalidDeals = new ArrayList<>();
 
-			deals.stream().filter(Objects::nonNull).forEach(deal -> {
-
-				try {
-					deal.source(fileName.toString()).fileType(extension).uploadedOn(LocalDate.now());
-					bulkOps.insert(deal);
-					affectedCount.addAndGet(1);
-				} catch (Exception ex) {
-					log.error("{0} has occured, will save deal {1} on invalid table", ex.getMessage(), deal);
-					try {
-						bulkOpsInvalid.insert(new InvalidDeal(deal, ex.getStackTrace()[0].toString()));
-						failedCount.addAndGet(1);
-						log.info(("Deal saved succesfully on Invalid Document"));
-					} catch (Exception e) {
-						log.error("File {} not supported or required delimiter not set.", extension);
-						throw new RuntimeException(e.getMessage());
-					}
+		dealsMap.forEach(f -> {
+			f.put("source", fileName);
+			f.put("fileType", extension);
+			f.put("uploadedOn", LocalDate.now().toString());
+			try {
+				String jsonString = mapper.writeValueAsString(f);
+				String error = isValidJSON(jsonString);
+				if (error.isEmpty()) { //checks if a json is valid
+					Deal deal = mapper.readValue(jsonString, Deal.class);
+					validDeals.add(deal);
+				} else {
+					JsonNode jsonNode = mapper.readTree(jsonString);
+					((ObjectNode) jsonNode).put("reason", error);
+					invalidDeals.add(mapper.readValue(jsonString, InvalidDeal.class));
 				}
-			});
-			if (affectedCount.get() > 0) {
-				bulkOps.execute();
-            }
-			if (failedCount.get() > 0) {
-				bulkOpsInvalid.execute();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
-			log.info("Deal saving batch!");
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-		result.put("valid", affectedCount.intValue());
-		result.put("invalid", failedCount.intValue());
-        return result;
+		});
+//		dealRepository.saveAll(validDeals);
+//		invalidDealRepository.saveAll(invalidDeals);
+
+		result.put(VALID_COUNT, validDeals.size());
+		result.put(INVALID_COUNT, invalidDeals.size());
+
+		return result;
     }
 
+	private synchronized String isValidJSON(final String json) {
+		try {
+			JsonNode jsonNode = mapper.readTree(json);
+			if (jsonNode.size() != 8) {
+				return "Some field elements are missing";
+			}
+			JsonNode fromIsoCode = jsonNode.get("fromIsoCode");
+			JsonNode toIsoCode = jsonNode.get("toIsoCode");
+			if (fromIsoCode.asText().length() != 3 || toIsoCode.asText().length() != 3) {
+				return "ISO code for currency should be 3";
+			}
+		} catch (JsonProcessingException e) {
+			return "Error processing file";
+		}
+		return "";
+	}
 }

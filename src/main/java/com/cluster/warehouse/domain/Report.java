@@ -2,6 +2,7 @@ package com.cluster.warehouse.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,6 +18,7 @@ import java.util.Objects;
  * A Report.
  */
 @Document(collection = "report")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Report implements Serializable {
 
 	private static final long serialVersionUID = 1L;

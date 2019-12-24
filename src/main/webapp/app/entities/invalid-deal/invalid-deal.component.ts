@@ -48,7 +48,7 @@ export class InvalidDealComponent implements OnInit, OnDestroy {
     loadAll() {
         if (this.currentSearch) {
             this.invalidDealService
-                .query({
+                .search({
                     page: this.page - 1,
                     query: this.currentSearch,
                     size: this.itemsPerPage,

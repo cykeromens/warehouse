@@ -14,6 +14,7 @@ type EntityArrayResponseType = HttpResponse<IInvalidDeal[]>;
 @Injectable({providedIn: 'root'})
 export class InvalidDealService {
     public resourceUrl = SERVER_API_URL + 'api/invalid-deals';
+    public resourceSearchUrl = SERVER_API_URL + 'api/_search/deals';
 
     constructor(protected http: HttpClient) {
     }
@@ -28,6 +29,13 @@ export class InvalidDealService {
         const options = createRequestOption(req);
         return this.http
             .get<IInvalidDeal[]>(this.resourceUrl, {params: options, observe: 'response'})
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
+    search(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http
+            .get<IInvalidDeal[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
             .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 

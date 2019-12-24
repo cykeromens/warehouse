@@ -56,10 +56,13 @@ public class DealResource {
         }
         Map<String, Integer> result = dealService.uploadFile(file);
         if (result.containsKey("error")) {
-            throw new BadRequestAlertException("Could not read file records", file.getName(), "error");
+			throw new BadRequestAlertException("Could not read file records", file.getName(), "path");
         }
-        if (result.containsKey("not-created")) {
-            throw new BadRequestAlertException("Could not upload file", file.getName(), "error");
+		if (result.containsKey("violations")) {
+			return ResponseEntity.ok()
+					.headers(HeaderUtil.createFailureAlert("deal", "violations",
+							"Could not upload file"))
+					.body(result);
         }
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createFileUploadAlert(result, file.getName()))

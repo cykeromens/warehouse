@@ -13,7 +13,7 @@ faster being that the test has just being performed on a system with an 8 CPU.
 The major to this solution is the mode of processing that was enhanced through parallel processing and the way 
 the batch file is deserialised which gained performance. 
 
-## How it works in Development
+## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
@@ -73,4 +73,17 @@ To achieve this, first build a docker image of your app by running:
 Then run:
 
     docker-compose -f src/main/docker/app.yml up -d
+
+
+##How it works
+
+Fire up any of the environment. 
+
+The application will land you on the home page where you can upload files. The test file for this application can be 
+found here [./deal/init-csv](./deals/init-csv).
+
+After uploaded is shows a summary alert and a redirect to the summary page. From the summary page you can 
+have links to view reports and deals that were uploaded.
+
+Duplicate files are not allowed and each failed duplicate is saved as an invalid collection.
 

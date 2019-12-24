@@ -6,6 +6,9 @@ import org.springframework.http.HttpHeaders;
 
 import java.util.Map;
 
+import static com.cluster.warehouse.config.Constants.INVALID_COUNT;
+import static com.cluster.warehouse.config.Constants.VALID_COUNT;
+
 /**
  * Utility class for HTTP headers creation.
  */
@@ -25,13 +28,10 @@ public final class HeaderUtil {
         return headers;
     }
 
-    public static HttpHeaders createEntityCreationAlert(String entityName, String param) {
-        return createAlert("A new " + entityName + " is created with identifier " + param, param);
-    }
-
 	public static HttpHeaders createFileUploadAlert(Map<String, Integer> result, String param) {
-		int invalid = result.get("invalid");
-		int valid = result.get("valid");
+		int valid = result.get(VALID_COUNT);
+		int invalid = result.get(INVALID_COUNT);
+
 		int total = invalid + valid;
 		if (result.size() > 2) {
 			return createAlert("This file " + param + " has been uploaded before. Valid: " +
@@ -42,10 +42,6 @@ public final class HeaderUtil {
 				valid + " Invalid: " +
 				invalid, param);
 	}
-
-    public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
-        return createAlert("A " + entityName + " is updated with identifier " + param, param);
-    }
 
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         log.error("Entity processing failed, {}", defaultMessage);

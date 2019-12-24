@@ -1,7 +1,7 @@
-<div class="row justify-content-center">
-    <div class="col-8">
+<div class="container card">
+    <div class="card-body">
         <div *ngIf="invalidDeal">
-            <h2><span>Invalid Deal</span> {{invalidDeal.id}}</h2>
+            <h5><span>Invalid Deal</span> {{invalidDeal.id}}</h5>
             <hr>
             <app-alert-error></app-alert-error>
             <dl class="row-md jh-entity-details">
@@ -29,9 +29,9 @@
                 <dd>
                     <span>{{invalidDeal.source}}</span>
                 </dd>
-                <dt><span>Source Format</span></dt>
+                <dt><span>Type</span></dt>
                 <dd>
-                    <span>{{invalidDeal.sourceFormat}}</span>
+                    <span>{{invalidDeal.fileType}}</span>
                 </dd>
                 <dt><span>Reason</span></dt>
                 <dd>
@@ -43,12 +43,6 @@
                     (click)="previousState()"
                     class="btn btn-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/invalid-deal', invalidDeal.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
             </button>
         </div>
     </div>

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +38,9 @@ public class DealServiceImpl implements DealService {
     private final ForkJoinService forkJoinService;
 
     public DealServiceImpl(DealRepository dealRepository,
-                           ForkJoinService forkJoinService,
-                           ApplicationProperties properties
+						   ForkJoinService forkJoinService,
+						   ApplicationProperties properties,
+						   MongoTemplate mongoTemplate
     ) {
         this.dealRepository = dealRepository;
         this.forkJoinService = forkJoinService;
@@ -81,13 +83,13 @@ public class DealServiceImpl implements DealService {
         String fileName = file.getOriginalFilename();
         File dir = new File(UPLOAD_DIR);
         try {
-            boolean dirExists = dir.exists() || dir.mkdir();
+			boolean dirExists = dir.exists() || dir.mkdirs();
             Path location = Paths.get(UPLOAD_DIR, File.separator, StringUtils.cleanPath(
                     Objects.requireNonNull(fileName)));
             Files.copy(file.getInputStream(), location, StandardCopyOption.REPLACE_EXISTING);
             return forkJoinService.beginProcess(file, location);
         } catch (Exception e) {
-            result.put("not-created", 500);
+			result.put("path", 500);
         }
         return result;
 

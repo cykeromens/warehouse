@@ -246,7 +246,7 @@ public class DealResourceIntTest extends BaseResourceIntTest {
                 .andExpect(jsonPath("$.[*].tagId").value(hasItem(DEFAULT_TAG_ID)))
                 .andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE)))
                 .andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE)))
-//                .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
+				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
                 .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
                 .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
                 .andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE)));

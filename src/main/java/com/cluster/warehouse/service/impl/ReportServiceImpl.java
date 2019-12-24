@@ -7,10 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,33 +75,19 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<Report> generateReport() {
 		log.debug("Request to get Report by page");
+		GroupOperation sumTotalCityPop = group("from_iso_code", "to_iso_code")
+				.count().as("total");
+		ProjectionOperation projectToMatchModel = project()
+				.andExpression("_id").as("fromIsoCode")
+				.andExpression("to_iso_code").as("toIsoCode")
+				.andExpression("total").as("total");
 
-		Aggregation aggregation = newAggregation(group("fromIsoCode", "toIsoCode")
-						.sum("fromIsoCode").as("total"),
-				sort(Sort.Direction.ASC, previousOperation(), "fromIsoCode"));
-
+		Aggregation aggregation = newAggregation(
+				sumTotalCityPop, projectToMatchModel.and("total"));
 		AggregationResults<Report> groupResults = mongoTemplate.aggregate(
 				aggregation, "deal", Report.class);
 
-		List<Report> salesReport = groupResults.getMappedResults();
-
-
-//
-//        //show the use of $or operator
-//        Query query = new Query();
-//        query.addCriteria(Criteria
-//                .where("fromIsoCode").exists(true).and("toIsoCode").exists(true)
-//                .orOperator(Criteria.where("fromIsoCode").is("appleD"),
-//                        Criteria.where("name").is("appleE")));
-//        Update update = new Update();
-//
-//        //update age to 11
-//        update.set("fromIsoCode", 11);
-//
-//        //remove the createdDate field
-//        update.unset("createdDate");
-
-		return salesReport;
+		return groupResults.getMappedResults();
 	}
 
 }

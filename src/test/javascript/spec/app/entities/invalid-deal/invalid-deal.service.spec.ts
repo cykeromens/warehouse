@@ -23,7 +23,7 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new InvalidDeal('ID', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, 0, 'AAAAAAA', 'AAAAAAA', currentDate);
+            elemDefault = new InvalidDeal('ID', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, 0, 'AAAAAAA', 'AAAAAAA', currentDate, "AAAAAA");
         });
 
         describe('Service methods', async () => {
@@ -54,7 +54,8 @@ describe('Service Tests', () => {
                         amount: 1,
                         source: 'BBBBBB',
                         fileType: 'BBBBBB',
-                        uploadedOn: currentDate.format(DATE_FORMAT)
+                        uploadedOn: currentDate.format(DATE_FORMAT),
+                        reason: 'BBBBBB',
                     },
                     elemDefault
                 );

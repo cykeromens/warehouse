@@ -2,6 +2,7 @@ package com.cluster.warehouse.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,13 +10,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 /**
  * A InvalidDeal.
  */
 @Document(collection = "invalid_deal")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InvalidDeal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,8 +35,8 @@ public class InvalidDeal implements Serializable {
     private String toIsoCode;
 
     @Field("time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm'Z'")
-    private ZonedDateTime time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private Date time;
 
     @Field("amount")
     private BigDecimal amount;
@@ -46,7 +48,6 @@ public class InvalidDeal implements Serializable {
     private String fileType;
 
     @Field("uploaded_on")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate uploadedOn;
 
     @Field("reason")
@@ -114,16 +115,16 @@ public class InvalidDeal implements Serializable {
         this.toIsoCode = toIsoCode;
     }
 
-    public ZonedDateTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public InvalidDeal time(ZonedDateTime time) {
+    public InvalidDeal time(Date time) {
         this.time = time;
         return this;
     }
 
-    public void setTime(ZonedDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

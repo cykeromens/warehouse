@@ -1,7 +1,7 @@
 package com.cluster.warehouse.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,6 +16,7 @@ import java.util.Objects;
  * A Summary.
  */
 @Document(collection = "summary")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Summary implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,8 +46,11 @@ public class Summary implements Serializable {
 	private Long invalid;
 
 	@NotNull
+	@Field("duplicate")
+	private Long duplicate;
+
+	@NotNull
 	@Field("date")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
 	public String getId() {
@@ -118,6 +122,19 @@ public class Summary implements Serializable {
         return this;
     }
 
+	public Long getDuplicate() {
+		return duplicate;
+	}
+
+	public Summary duplicate(Long duplicate) {
+		this.duplicate = duplicate;
+		return this;
+	}
+
+	public void setDuplicate(Long duplicate) {
+		this.duplicate = duplicate;
+	}
+
 	public void setInvalid(Long invalid) {
 		this.invalid = invalid;
 	}
@@ -164,6 +181,7 @@ public class Summary implements Serializable {
 				", total=" + getTotal() +
 				", valid=" + getValid() +
 				", invalid=" + getInvalid() +
+				", duplicate=" + getDuplicate() +
 				", date='" + getDate() + "'" +
 				"}";
     }

@@ -26,9 +26,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                    <th jhiSortBy="tagId"><span>Tag</span>
-                        <fa-icon [icon]="'sort'"></fa-icon>
-                    </th>
                     <th jhiSortBy="fromIsoCode"><span>From Iso Code</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
@@ -41,16 +38,19 @@
                     <th jhiSortBy="source"><span>Source</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
+                    <th jhiSortBy="time"><span>Time</span>
+                        <fa-icon [icon]="'sort'"></fa-icon>
+                    </th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let deal of deals ;trackBy: trackId">
-                    <td><a [routerLink]="['/deal', deal.id, 'view' ]">{{deal.tagId}}</a></td>
-                    <td>{{deal.fromIsoCode}}</td>
+                    <td><a [routerLink]="['/deal', deal.id, 'view' ]">{{deal.fromIsoCode}}</a></td>
                     <td>{{deal.toIsoCode}}</td>
                     <td>{{deal.amount}}</td>
                     <td>{{deal.source}}</td>
+                    <td>{{deal.time}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

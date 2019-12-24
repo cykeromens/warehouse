@@ -32,16 +32,12 @@ public class JacksonConfiguration {
 
 	@Bean
 	public ObjectMapper objectMapper() {
-		ObjectMapper build = JsonMapper.builder() // or different mapper for other format
+		return JsonMapper.builder() // or different mapper for other format
 				.addModule(new ParameterNamesModule())
 				.addModule(new Jdk8Module())
 				.addModule(new JavaTimeModule())
 				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 				.build();
-//        SimpleModule module = new SimpleModule();
-//        module.addDeserializer(ZonedDateTime.class, new ZonedDateTimeDeserializer());
-//        build.registerModule(module);
-		return build;
 	}
 
 

@@ -1,5 +1,6 @@
 package com.cluster.warehouse.web.rest;
 
+import com.cluster.warehouse.BaseResourceIntTest;
 import com.cluster.warehouse.WarehouseApplication;
 import com.cluster.warehouse.domain.Summary;
 import com.cluster.warehouse.repository.SummaryRepository;
@@ -19,8 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
-import java.time.LocalDate;
-
 import static com.cluster.warehouse.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -34,19 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WarehouseApplication.class)
-public class SummaryResourceIntTest {
-
-    private static final String DEFAULT_FILE_NAME = "AAAAAAAAAA";
-
-    private static final Double DEFAULT_DURATION = 1D;
-
-    private static final Long DEFAULT_TOTAL = 1L;
-
-    private static final Long DEFAULT_VALID = 1L;
-
-    private static final Long DEFAULT_INVALID = 1L;
-
-    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
+public class SummaryResourceIntTest extends BaseResourceIntTest {
 
     @Autowired
     private SummaryRepository summaryRepository;
@@ -95,6 +82,7 @@ public class SummaryResourceIntTest {
                 .total(DEFAULT_TOTAL)
                 .valid(DEFAULT_VALID)
                 .invalid(DEFAULT_INVALID)
+				.duplicate(DEFAULT_DUPLICATE)
                 .date(DEFAULT_DATE);
         return summary;
     }
@@ -120,6 +108,7 @@ public class SummaryResourceIntTest {
                 .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.intValue())))
                 .andExpect(jsonPath("$.[*].valid").value(hasItem(DEFAULT_VALID.intValue())))
                 .andExpect(jsonPath("$.[*].invalid").value(hasItem(DEFAULT_INVALID.intValue())))
+				.andExpect(jsonPath("$.[*].duplicate").value(hasItem(DEFAULT_DUPLICATE.intValue())))
                 .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
@@ -138,6 +127,7 @@ public class SummaryResourceIntTest {
                 .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.intValue()))
                 .andExpect(jsonPath("$.valid").value(DEFAULT_VALID.intValue()))
                 .andExpect(jsonPath("$.invalid").value(DEFAULT_INVALID.intValue()))
+				.andExpect(jsonPath("$.duplicate").value(DEFAULT_DUPLICATE.intValue()))
                 .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 

@@ -9,9 +9,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                    <th jhiSortBy="id"><span>ID</span>
-                        <fa-icon [icon]="'sort'"></fa-icon>
-                    </th>
                     <th jhiSortBy="fromIsoCode"><span>From Iso Code</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
@@ -29,7 +26,6 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let report of reports ;trackBy: trackId">
-                    <td><a [routerLink]="['/report', report.id, 'view' ]">{{report.id}}</a></td>
                     <td>{{report.fromIsoCode}}</td>
                     <td>{{report.toIsoCode}}</td>
                     <td>{{report.total}}</td>
@@ -41,20 +37,6 @@
                                     class="btn btn-info btn-sm">
                                 <fa-icon [icon]="'eye'"></fa-icon>
                                 <span class="d-none d-md-inline">View</span>
-                            </button>
-                            <button type="submit"
-                                    [routerLink]="['/report', report.id, 'edit']"
-                                    class="btn btn-primary btn-sm">
-                                <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                                <span class="d-none d-md-inline">Edit</span>
-                            </button>
-                            <button type="submit"
-                                    [routerLink]="['/', 'report', { outlets: { popup: report.id + '/delete'} }]"
-                                    replaceUrl="true"
-                                    queryParamsHandling="merge"
-                                    class="btn btn-danger btn-sm">
-                                <fa-icon [icon]="'times'"></fa-icon>
-                                <span class="d-none d-md-inline">Delete</span>
                             </button>
                         </div>
                     </td>
