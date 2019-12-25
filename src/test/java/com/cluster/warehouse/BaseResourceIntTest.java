@@ -1,13 +1,12 @@
 package com.cluster.warehouse;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class BaseResourceIntTest {
 
-	protected static final String DEFAULT_TAG_ID = "AAAAAAAAAA";
+	private static final String DATE = "25-12-2019 12:00:00";
+	protected static final String DEFAULT_ID = "AAAAAAAAAA";
 	protected static final String FILE_NAME = "./text.csv";
 	protected static final String FILE_DETAIL = "tagId;fromIsoCode;toIsoCode;time;amount;\n" +
 			"vvjtynbiadcacauyzoaui;USD;USD;2019-12-21T10:04:46.801Z;90561.0";
@@ -16,19 +15,23 @@ public class BaseResourceIntTest {
 	protected static final String DEFAULT_FROM_ISO_CODE = "AAA";
 	protected static final String DEFAULT_TO_ISO_CODE = "BBB";
 
-	protected static final Date DEFAULT_TIME = Date.from(Instant.ofEpochSecond(10));
+	protected static final LocalDateTime DEFAULT_TIME = LocalDateTime.now();
+	protected static final String DEFAULT_STRING_TIME = "AAAAAAAAAA";
 
-	protected static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(1);
+	protected static final Double DEFAULT_AMOUNT = 1.0;
+	protected static final String DEFAULT_STRING_AMOUNT = "AAAAAAAAAA";
 
 	protected static final String DEFAULT_SOURCE = "AAAAAAAAAA";
 
 	protected static final String DEFAULT_FILE_TYPE = "AAAAAAAAAA";
+	protected static final String DEFAULT_REASON = "AAAAAAAAAA";
 
-	protected static final LocalDate DEFAULT_UPLOADED_ON = LocalDate.ofEpochDay(0L);
+	protected static final LocalDateTime DEFAULT_UPLOADED_ON = LocalDateTime.now();
+	protected static final String DEFAULT_STRING_UPLOADED_ON = "AAAAAAAAAA";
 
 	protected static final Long DEFAULT_TOTAL = 1L;
 
-	protected static final LocalDate DEFAULT_LAST_UPDATED = LocalDate.now();
+	protected static final LocalDate DEFAULT_LAST_UPDATED = LocalDate.ofEpochDay(0L);
 
 	protected static final String DEFAULT_FILE_NAME = "AAAAAAAAAA";
 
@@ -40,6 +43,5 @@ public class BaseResourceIntTest {
 
 	protected static final Long DEFAULT_INVALID = 1L;
 
-	protected static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
-
+	protected static final LocalDateTime DEFAULT_DATE_TIME = LocalDateTime.now();
 }

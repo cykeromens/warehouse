@@ -17,7 +17,7 @@ spring:
       enabled: false
   data:
     mongodb:
-      uri: mongodb://localhost:27017
+      uri: mongodb://localhost:27017/?minPoolSize=20
       database: warehouse-dev
   thymeleaf:
     cache: true

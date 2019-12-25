@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -51,7 +51,7 @@ public class Summary implements Serializable {
 
 	@NotNull
 	@Field("date")
-	private LocalDate date;
+	private LocalDateTime date;
 
 	public String getId() {
         return id;
@@ -139,16 +139,16 @@ public class Summary implements Serializable {
 		this.invalid = invalid;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
     }
 
-	public Summary date(LocalDate date) {
+	public Summary date(LocalDateTime date) {
 		this.date = date;
 		return this;
     }
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
     }
 

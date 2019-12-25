@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.cluster.warehouse.config.Constants.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /**
@@ -75,17 +76,17 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<Report> generateReport() {
 		log.debug("Request to get Report by page");
-		GroupOperation sumTotalCityPop = group("from_iso_code", "to_iso_code")
-				.count().as("total");
+		GroupOperation sumTotalCityPop = group(_FROM_ISO_CODE, _TO_ISO_CODE)
+				.count().as(TOTAL);
 		ProjectionOperation projectToMatchModel = project()
-				.andExpression("_id").as("fromIsoCode")
-				.andExpression("to_iso_code").as("toIsoCode")
-				.andExpression("total").as("total");
+				.andExpression(_ID).as(FROM_ISO_CODE)
+				.andExpression(_TO_ISO_CODE).as(TO_ISO_CODE)
+				.andExpression(TOTAL).as(TOTAL);
 
 		Aggregation aggregation = newAggregation(
-				sumTotalCityPop, projectToMatchModel.and("total"));
+				sumTotalCityPop, projectToMatchModel.and(TOTAL));
 		AggregationResults<Report> groupResults = mongoTemplate.aggregate(
-				aggregation, "deal", Report.class);
+				aggregation, VALID_DEAL, Report.class);
 
 		return groupResults.getMappedResults();
 	}

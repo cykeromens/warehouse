@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 import static com.cluster.warehouse.web.rest.TestUtil.createFormattingConversionService;
+import static com.cluster.warehouse.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -90,7 +91,7 @@ public class DealResourceIntTest extends BaseResourceIntTest {
      */
     public static Deal createEntity() {
         Deal deal = new Deal()
-            .tagId(DEFAULT_TAG_ID)
+				.id(DEFAULT_ID)
             .fromIsoCode(DEFAULT_FROM_ISO_CODE)
             .toIsoCode(DEFAULT_TO_ISO_CODE)
             .time(DEFAULT_TIME)
@@ -189,16 +190,15 @@ public class DealResourceIntTest extends BaseResourceIntTest {
         // Get all the dealList
         restDealMockMvc.perform(get("/api/deals?sort=id,desc"))
             .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(deal.getId())))
-                .andExpect(jsonPath("$.[*].tagId").value(hasItem(DEFAULT_TAG_ID.toString())))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
             .andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
             .andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
-//            .andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
+				.andExpect(jsonPath("$.[*].time").value(hasItem(sameInstant(DEFAULT_TIME))))
+				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
             .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
-                .andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE.toString())))
-                .andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(DEFAULT_UPLOADED_ON.toString())));
+				.andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE.toString())))
+				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(sameInstant(DEFAULT_UPLOADED_ON))));
     }
     
     @Test
@@ -210,15 +210,14 @@ public class DealResourceIntTest extends BaseResourceIntTest {
         restDealMockMvc.perform(get("/api/deals/{id}", deal.getId()))
             .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id").value(deal.getId()))
-                .andExpect(jsonPath("$.tagId").value(DEFAULT_TAG_ID.toString()))
-            .andExpect(jsonPath("$.fromIsoCode").value(DEFAULT_FROM_ISO_CODE.toString()))
-            .andExpect(jsonPath("$.toIsoCode").value(DEFAULT_TO_ISO_CODE.toString()))
-//            .andExpect(jsonPath("$.time").value(DEFAULT_TIME))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
-            .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
-                .andExpect(jsonPath("$.fileType").value(DEFAULT_FILE_TYPE.toString()))
-                .andExpect(jsonPath("$.uploadedOn").value(DEFAULT_UPLOADED_ON.toString()));
+				.andExpect(jsonPath("$.id").value(DEFAULT_ID))
+				.andExpect(jsonPath("$.fromIsoCode").value(DEFAULT_FROM_ISO_CODE.toString()))
+				.andExpect(jsonPath("$.toIsoCode").value(DEFAULT_TO_ISO_CODE.toString()))
+				.andExpect(jsonPath("$.time").value(sameInstant(DEFAULT_TIME)))
+				.andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
+				.andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
+				.andExpect(jsonPath("$.fileType").value(DEFAULT_FILE_TYPE.toString()))
+				.andExpect(jsonPath("$.uploadedOn").value(sameInstant(DEFAULT_UPLOADED_ON)));
     }
 
     @Test
@@ -242,12 +241,11 @@ public class DealResourceIntTest extends BaseResourceIntTest {
         restDealMockMvc.perform(get("/api/_search/deals?sort=id,desc&query=" + deal.getSource()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(deal.getId())))
-                .andExpect(jsonPath("$.[*].tagId").value(hasItem(DEFAULT_TAG_ID)))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
                 .andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE)))
                 .andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE)))
-				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
-                .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
+				.andExpect(jsonPath("$.[*].time").value(hasItem(sameInstant(DEFAULT_TIME))))
+				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
                 .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
                 .andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE)));
     }

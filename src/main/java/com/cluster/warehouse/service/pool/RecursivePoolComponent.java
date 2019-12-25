@@ -43,6 +43,7 @@ public class RecursivePoolComponent extends RecursiveAction {
 	public void compute() {
 		int batchSize = properties.getBatch().getUpload().getBatchSize();
 		if (readLines.size() > batchSize) {
+			log.debug("Creating more sub task... ");
 			ForkJoinTask.invokeAll(createSubtasks());
 		} else {
 			Map<String, Integer> batchMap = joiningComponent.executeBatch(readLines);
@@ -50,13 +51,12 @@ public class RecursivePoolComponent extends RecursiveAction {
 		}
 	}
 
-	public void mergeMap(Map<String, Integer> newMap) {
+	private void mergeMap(Map<String, Integer> newMap) {
 		newMap.forEach((k, v) -> batchResultMap.merge(k, v, Integer::sum));
 	}
 
 	private synchronized List<RecursivePoolComponent> createSubtasks() {
 		List<RecursivePoolComponent> subtasks = new ArrayList<>();
-
 		int size = readLines.size();
 
 		List<Map<String, String>> listOne = readLines.subList(0, (size + 1) / 2);

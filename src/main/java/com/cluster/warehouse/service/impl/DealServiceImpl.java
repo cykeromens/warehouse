@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,9 +37,8 @@ public class DealServiceImpl implements DealService {
     private final ForkJoinService forkJoinService;
 
     public DealServiceImpl(DealRepository dealRepository,
-						   ForkJoinService forkJoinService,
-						   ApplicationProperties properties,
-						   MongoTemplate mongoTemplate
+                           ForkJoinService forkJoinService,
+                           ApplicationProperties properties
     ) {
         this.dealRepository = dealRepository;
         this.forkJoinService = forkJoinService;

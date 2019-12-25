@@ -2,7 +2,6 @@ package com.cluster.warehouse.web.rest;
 
 import com.cluster.warehouse.BaseResourceIntTest;
 import com.cluster.warehouse.WarehouseApplication;
-import com.cluster.warehouse.domain.Deal;
 import com.cluster.warehouse.domain.InvalidDeal;
 import com.cluster.warehouse.repository.InvalidDealRepository;
 import com.cluster.warehouse.service.InvalidDealService;
@@ -80,8 +79,16 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
      * if they test an entity which requires the current entity.
      */
 	public static InvalidDeal createEntity() {
-		Deal deal = DealResourceIntTest.createEntity();
-		return new InvalidDeal(deal, DEFAULT_EXCEPTION);
+		return new InvalidDeal()
+				.id(DEFAULT_ID)
+				.fromIsoCode(DEFAULT_FROM_ISO_CODE)
+				.toIsoCode(DEFAULT_TO_ISO_CODE)
+				.time(DEFAULT_STRING_TIME)
+				.amount(DEFAULT_STRING_AMOUNT)
+				.source(DEFAULT_SOURCE)
+				.fileType(DEFAULT_FILE_TYPE)
+				.uploadedOn(DEFAULT_STRING_UPLOADED_ON)
+				.reason(DEFAULT_REASON);
     }
 
     @Before
@@ -99,14 +106,13 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
         restInvalidDealMockMvc.perform(get("/api/invalid-deals?sort=id,desc"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(jsonPath("$.[*].id").value(hasItem(invalidDeal.getId())))
-				.andExpect(jsonPath("$.[*].tagId").value(hasItem(DEFAULT_TAG_ID.toString())))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
 				.andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
 				.andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
-//            .andExpect(jsonPath("$.[*].time").value(hasItem(sameInstant(DEFAULT_TIME))))
-				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
-				.andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
-				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(DEFAULT_UPLOADED_ON.toString())));
+				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_STRING_TIME)))
+				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_STRING_AMOUNT)))
+				.andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
+				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(DEFAULT_STRING_UPLOADED_ON)));
     }
 
 	@Test
@@ -115,17 +121,16 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
 		invalidDealRepository.save(invalidDeal);
 
         // Get the invalidDeal
-        restInvalidDealMockMvc.perform(get("/api/invalid-deals/{id}", invalidDeal.getId()))
+		restInvalidDealMockMvc.perform(get("/api/invalid-deals/{id}", this.invalidDeal.getId()))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(jsonPath("$.id").value(invalidDeal.getId()))
-				.andExpect(jsonPath("$.tagId").value(DEFAULT_TAG_ID.toString()))
-				.andExpect(jsonPath("$.fromIsoCode").value(DEFAULT_FROM_ISO_CODE.toString()))
-				.andExpect(jsonPath("$.toIsoCode").value(DEFAULT_TO_ISO_CODE.toString()))
-//            .andExpect(jsonPath("$.time").value(sameInstant(DEFAULT_TIME)))
-				.andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
-				.andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
-				.andExpect(jsonPath("$.uploadedOn").value(DEFAULT_UPLOADED_ON.toString()));
+				.andExpect(jsonPath("$.fromIsoCode").value(DEFAULT_FROM_ISO_CODE))
+				.andExpect(jsonPath("$.toIsoCode").value(DEFAULT_TO_ISO_CODE))
+				.andExpect(jsonPath("$.time").value(DEFAULT_STRING_TIME))
+				.andExpect(jsonPath("$.amount").value(DEFAULT_STRING_AMOUNT))
+				.andExpect(jsonPath("$.source").value(DEFAULT_SOURCE))
+				.andExpect(jsonPath("$.uploadedOn").value(DEFAULT_STRING_UPLOADED_ON));
     }
 
     @Test
@@ -149,14 +154,14 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
 		restInvalidDealMockMvc.perform(get("/api/_search/invalid-deals?sort=id,desc&query=" + invalidDeal.getSource()))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(jsonPath("$.[*].id").value(hasItem(invalidDeal.getId())))
-				.andExpect(jsonPath("$.[*].tagId").value(hasItem(DEFAULT_TAG_ID)))
-				.andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE)))
-				.andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE)))
-//				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_TIME)))
-				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
+				.andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
+				.andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
+				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_STRING_TIME)))
+				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_STRING_AMOUNT)))
 				.andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
-				.andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE)));
+				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(DEFAULT_STRING_UPLOADED_ON)));
 	}
 
     @Test

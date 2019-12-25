@@ -8,7 +8,6 @@ import com.cluster.warehouse.domain.Report;
 import com.cluster.warehouse.repository.DealRepository;
 import com.cluster.warehouse.repository.ReportRepository;
 import com.cluster.warehouse.service.ReportService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,12 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import static com.cluster.warehouse.config.Constants.DATETIME_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -61,7 +56,7 @@ public class ReportServiceImplTest extends BaseResourceIntTest {
 	 */
 	public static Deal createEntity() {
 		return new Deal()
-				.tagId(DEFAULT_TAG_ID)
+				.id(DEFAULT_ID)
 				.fromIsoCode(DEFAULT_FROM_ISO_CODE)
 				.toIsoCode(DEFAULT_TO_ISO_CODE)
 				.time(DEFAULT_TIME)
@@ -88,19 +83,19 @@ public class ReportServiceImplTest extends BaseResourceIntTest {
 		assertThat(testReport.getTotal()).isEqualTo(DEFAULT_TOTAL);
 	}
 
-	@Test
-	public void whenSerializingDateToISO8601_thenSerializedToText()
-			throws JsonProcessingException, ParseException {
-		SimpleDateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
-
-//		String toParse = "20-12-2014 02:3";
-		String toParse = "6783423000";
-		Date date = df.parse(toParse);
+//	@Test
+//	public void whenSerializingDateToISO8601_thenSerializedToText()
+//			throws JsonProcessingException, ParseException {
+//		SimpleDateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
+//
+////		String toParse = "20-12-2014 02:3";
+//		String toParse = "6783423000";
 //		Date date = df.parse(toParse);
-
-		Deal event = new Deal().time(date).source("ext");
-
-		String result = mapper.writeValueAsString(event);
-		assertThat(result).contains(toParse);
-	}
+////		Date date = df.parse(toParse);
+//
+//		Deal event = new Deal().time(date).source("ext");
+//
+//		String result = mapper.writeValueAsString(event);
+//		assertThat(result).contains(toParse);
+//	}
 }

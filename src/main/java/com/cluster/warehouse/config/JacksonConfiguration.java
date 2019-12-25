@@ -1,12 +1,8 @@
 package com.cluster.warehouse.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.zalando.problem.ProblemModule;
@@ -17,7 +13,6 @@ public class JacksonConfiguration {
 
 	/**
 	 * Support for Java date and time API.
-	 *
 	 * @return the corresponding Jackson module.
 	 */
 	@Bean
@@ -29,17 +24,6 @@ public class JacksonConfiguration {
 	public Jdk8Module jdk8TimeModule() {
 		return new Jdk8Module();
 	}
-
-	@Bean
-	public ObjectMapper objectMapper() {
-		return JsonMapper.builder() // or different mapper for other format
-				.addModule(new ParameterNamesModule())
-				.addModule(new Jdk8Module())
-				.addModule(new JavaTimeModule())
-				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-				.build();
-	}
-
 
 	/*
 	 * Jackson Afterburner module to speed up serialization/deserialization.

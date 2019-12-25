@@ -64,6 +64,7 @@ export class DealService {
         if (res.body) {
             res.body.forEach((deal: IDeal) => {
                 deal.time = deal.time != null ? moment(deal.time) : null;
+                console.log(deal.time);
             });
         }
         return res;

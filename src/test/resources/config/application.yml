@@ -30,6 +30,6 @@ server:
 application:
     batch:
         upload:
-            dir: ./logs/test/
-            batchSize: 5
+            dir: classpath:/deal.csv
+            batchSize: 2
             delimiter: ;

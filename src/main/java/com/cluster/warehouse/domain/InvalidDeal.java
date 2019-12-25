@@ -1,16 +1,12 @@
 package com.cluster.warehouse.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -25,9 +21,6 @@ public class InvalidDeal implements Serializable {
     @Id
     private String id;
 
-    @Field("tag_id")
-    private String tagId;
-
     @Field("from_iso_code")
     private String fromIsoCode;
 
@@ -35,11 +28,10 @@ public class InvalidDeal implements Serializable {
     private String toIsoCode;
 
     @Field("time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    private Date time;
+	private String time;
 
     @Field("amount")
-    private BigDecimal amount;
+	private String amount;
 
     @Field("source")
     private String source;
@@ -48,10 +40,13 @@ public class InvalidDeal implements Serializable {
     private String fileType;
 
     @Field("uploaded_on")
-    private LocalDate uploadedOn;
+	private String uploadedOn;
 
     @Field("reason")
     private String reason;
+
+	public InvalidDeal() {
+	}
 
     public String getId() {
         return id;
@@ -61,32 +56,9 @@ public class InvalidDeal implements Serializable {
         this.id = id;
     }
 
-    public String getTagId() {
-        return tagId;
-    }
-
-    public InvalidDeal() {
-    }
-
-    public InvalidDeal tagId(String tagId) {
-        this.tagId = tagId;
+	public InvalidDeal id(String id) {
+		this.id = id;
         return this;
-    }
-
-    public InvalidDeal(Deal deal, String reason) {
-        this.tagId = deal.getTagId();
-        this.fromIsoCode = deal.getFromIsoCode();
-        this.toIsoCode = deal.getToIsoCode();
-        this.time = deal.getTime();
-        this.amount = deal.getAmount();
-        this.source = deal.getSource();
-        this.reason = reason;
-        this.uploadedOn = deal.getUploadedOn();
-        this.fileType = deal.getFileType();
-    }
-
-    public void setTagId(String tagId) {
-        this.tagId = tagId;
     }
 
     public String getFromIsoCode() {
@@ -115,29 +87,29 @@ public class InvalidDeal implements Serializable {
         this.toIsoCode = toIsoCode;
     }
 
-    public Date getTime() {
+	public String getTime() {
         return time;
     }
 
-    public InvalidDeal time(Date time) {
+	public InvalidDeal time(String time) {
         this.time = time;
         return this;
     }
 
-    public void setTime(Date time) {
+	public void setTime(String time) {
         this.time = time;
     }
 
-    public BigDecimal getAmount() {
+	public String getAmount() {
         return amount;
     }
 
-    public InvalidDeal amount(BigDecimal amount) {
+	public InvalidDeal amount(String amount) {
         this.amount = amount;
         return this;
     }
 
-    public void setAmount(BigDecimal amount) {
+	public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -167,16 +139,16 @@ public class InvalidDeal implements Serializable {
         this.fileType = fileType;
     }
 
-    public LocalDate getUploadedOn() {
+	public String getUploadedOn() {
         return uploadedOn;
     }
 
-    public InvalidDeal uploadedOn(LocalDate uploadedOn) {
+	public InvalidDeal uploadedOn(String uploadedOn) {
         this.uploadedOn = uploadedOn;
         return this;
     }
 
-    public void setUploadedOn(LocalDate uploadedOn) {
+	public void setUploadedOn(String uploadedOn) {
         this.uploadedOn = uploadedOn;
     }
 
@@ -217,7 +189,7 @@ public class InvalidDeal implements Serializable {
     public String toString() {
         return "InvalidDeal{" +
                 "id=" + getId() +
-                ", tagId='" + getTagId() + "'" +
+				"" +
                 ", fromIsoCode='" + getFromIsoCode() + "'" +
                 ", toIsoCode='" + getToIsoCode() + "'" +
                 ", time='" + getTime() + "'" +

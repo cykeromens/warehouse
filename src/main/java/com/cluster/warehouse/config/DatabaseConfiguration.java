@@ -1,17 +1,13 @@
 package com.cluster.warehouse.config;
 
-import com.github.mongobee.Mongobee;
-import com.mongodb.MongoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -41,22 +37,8 @@ public class DatabaseConfiguration {
 	@Bean
 	public MongoCustomConversions customConversions() {
 		List<Converter<?, ?>> converters = new ArrayList<>();
-		converters.add(new ZonedDateTimeReadConverter());
-		converters.add(new ZonedDateTimeWriteConverter());
+//		converters.add(new LocalDateTimeReadConverter());
+//		converters.add(new LocalDateTimeWriteConverter());
 		return new MongoCustomConversions(converters);
 	}
-
-	@Bean
-	public Mongobee mongobee(MongoClient mongoClient, MongoTemplate mongoTemplate, MongoProperties mongoProperties) {
-		log.debug("Configuring Mongobee");
-		Mongobee mongobee = new Mongobee(mongoClient);
-		mongobee.setDbName(mongoProperties.getMongoClientDatabase());
-		mongobee.setMongoTemplate(mongoTemplate);
-		// package to scan for migrations
-		mongobee.setChangeLogsScanPackage("com.cluster.warehouse.config.dbmigrations");
-		mongobee.setEnabled(true);
-		return mongobee;
-	}
-
-
 }

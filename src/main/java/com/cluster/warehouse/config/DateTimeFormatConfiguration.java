@@ -1,14 +1,9 @@
 package com.cluster.warehouse.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 /**
  * Configure the converters to use the ISO format for dates by default.
@@ -24,18 +19,19 @@ public class DateTimeFormatConfiguration implements WebMvcConfigurer {
 	}
 }
 
-class ZonedDateTimeReadConverter implements Converter<Date, ZonedDateTime> {
-	@Override
-	public ZonedDateTime convert(Date date) {
-		return date.toInstant().atZone(ZoneOffset.UTC);
-	}
-}
-
-class ZonedDateTimeWriteConverter implements Converter<ZonedDateTime, Date> {
-	@Override
-	public Date convert(ZonedDateTime zonedDateTime) {
-		return Date.from(zonedDateTime.toInstant());
-	}
-}
+//class LocalDateTimeReadConverter implements Converter<String, LocalDateTime> {
+//	@Override
+//	public LocalDateTime convert(String date) {
+//		String format = new SimpleDateFormat(DATE_TIME_FORMAT).format(date);
+//		return LocalDateTime.parse(format);
+//	}
+//}
+//
+//class LocalDateTimeWriteConverter implements Converter<LocalDateTime, String> {
+//	@Override
+//	public String convert(LocalDateTime localDateTime) {
+//		return new SimpleDateFormat(DATE_TIME_FORMAT).format(localDateTime);
+//	}
+//}
 
 

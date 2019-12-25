@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
 import static com.cluster.warehouse.web.rest.TestUtil.createFormattingConversionService;
+import static com.cluster.warehouse.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -83,7 +84,7 @@ public class SummaryResourceIntTest extends BaseResourceIntTest {
                 .valid(DEFAULT_VALID)
                 .invalid(DEFAULT_INVALID)
 				.duplicate(DEFAULT_DUPLICATE)
-                .date(DEFAULT_DATE);
+                .date(DEFAULT_DATE_TIME);
         return summary;
     }
 
@@ -109,7 +110,7 @@ public class SummaryResourceIntTest extends BaseResourceIntTest {
                 .andExpect(jsonPath("$.[*].valid").value(hasItem(DEFAULT_VALID.intValue())))
                 .andExpect(jsonPath("$.[*].invalid").value(hasItem(DEFAULT_INVALID.intValue())))
 				.andExpect(jsonPath("$.[*].duplicate").value(hasItem(DEFAULT_DUPLICATE.intValue())))
-                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
+                .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE_TIME))));
     }
 
     @Test
@@ -128,7 +129,7 @@ public class SummaryResourceIntTest extends BaseResourceIntTest {
                 .andExpect(jsonPath("$.valid").value(DEFAULT_VALID.intValue()))
                 .andExpect(jsonPath("$.invalid").value(DEFAULT_INVALID.intValue()))
 				.andExpect(jsonPath("$.duplicate").value(DEFAULT_DUPLICATE.intValue()))
-                .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
+                .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE_TIME)));
     }
 
     @Test

@@ -15,5 +15,4 @@ import org.springframework.stereotype.Repository;
 public interface DealRepository extends MongoRepository<Deal, String> {
 
 	Page<Deal> findBySourceContaining(String fileName, Pageable pageable);
-//	boolean existsByTagId(String tagId);
 }
