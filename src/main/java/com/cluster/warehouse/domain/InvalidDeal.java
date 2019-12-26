@@ -24,6 +24,9 @@ public class InvalidDeal implements Serializable {
     @Field("from_iso_code")
     private String fromIsoCode;
 
+    @Field("deal_id")
+    private String dealId;
+
     @Field("to_iso_code")
     private String toIsoCode;
 
@@ -36,8 +39,8 @@ public class InvalidDeal implements Serializable {
     @Field("source")
     private String source;
 
-    @Field("file_type")
-    private String fileType;
+    @Field("extension")
+    private String extension;
 
     @Field("uploaded_on")
 	private String uploadedOn;
@@ -58,6 +61,19 @@ public class InvalidDeal implements Serializable {
 
 	public InvalidDeal id(String id) {
 		this.id = id;
+        return this;
+    }
+
+    public String getDealId() {
+        return dealId;
+    }
+
+    public void setDealId(String dealId) {
+        this.dealId = dealId;
+    }
+
+    public InvalidDeal dealId(String dealId) {
+        this.dealId = dealId;
         return this;
     }
 
@@ -126,17 +142,17 @@ public class InvalidDeal implements Serializable {
         this.source = source;
     }
 
-    public String getFileType() {
-        return fileType;
+    public String getExtension() {
+        return extension;
     }
 
-    public InvalidDeal fileType(String fileType) {
-        this.fileType = fileType;
+    public InvalidDeal extension(String extension) {
+        this.extension = extension;
         return this;
     }
 
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
 	public String getUploadedOn() {
@@ -195,7 +211,7 @@ public class InvalidDeal implements Serializable {
                 ", time='" + getTime() + "'" +
                 ", amount=" + getAmount() +
                 ", source='" + getSource() + "'" +
-                ", fileType='" + getFileType() + "'" +
+                ", extension='" + getExtension() + "'" +
                 ", uploadedOn='" + getUploadedOn() + "'" +
                 "}";
     }

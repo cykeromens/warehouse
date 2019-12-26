@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,16 +116,17 @@ public class ForkJoinService {
     private void saveSummary(Map<String, Integer> result, double duration) {
         log.info("Saving summary...");
         Query query = new Query();
-		query.addCriteria(Criteria.where("fileName").is(fileName));
+		query.addCriteria(Criteria.where(FILE_SOURCE).is(fileName));
         //summary on time
-        int validCount = result.get(VALID_COUNT);
-        int invalidCount = result.get(INVALID_COUNT);
+		long validCount = result.get(VALID_COUNT);
+		long invalidCount = result.get(INVALID_COUNT);
         Update update = new Update();
 		update.set(TOTAL, validCount + invalidCount);
-		update.set(VALID_COUNT, validCount);
-		update.set(INVALID_COUNT, invalidCount);
-		update.set(DATE, LocalDate.now());
+		update.set(VALID, validCount);
+		update.set(INVALID, invalidCount);
+		update.set(DATE, LocalDateTime.now());
 		update.set(DURATION, duration);
+		update.set(FILE_SOURCE, fileName);
         mongoTemplate.upsert(query, update, Summary.class);
         log.info("Summary updated!");
 
@@ -135,18 +137,21 @@ public class ForkJoinService {
 
     private void saveReport(List<Report> reports) {
         log.info("Updating report...");
-        reports.forEach(report -> {
-            report.lastUpdated(LocalDate.now());
-            Query query = new Query();
-			query.addCriteria(Criteria.where(FROM_ISO_CODE)
-                    .is(report.getFromIsoCode())
-					.and(TO_ISO_CODE).is(report.getToIsoCode()));
-            Update update = new Update();
-			update.set(FROM_ISO_CODE, report.getFromIsoCode());
-			update.set(TO_ISO_CODE, report.getToIsoCode());
-			update.set(TOTAL, report.getTotal());
-			update.set(LAST_UPDATED, LocalDate.now());
-            mongoTemplate.upsert(query, update, Report.class);
-        });
+		reports.stream()
+				.filter(f -> f.getFromIsoCode().length() == 3 && f.getToIsoCode().length() == 3)
+				.forEach(report -> {
+					report.lastUpdated(LocalDate.now());
+					Query query = new Query();
+					query.addCriteria(Criteria.where(FROM_ISO_CODE)
+							.is(report.getFromIsoCode())
+							.and(TO_ISO_CODE).is(report.getToIsoCode()));
+					Update update = new Update();
+					update.set(FROM_ISO_CODE, report.getFromIsoCode());
+					update.set(TO_ISO_CODE, report.getToIsoCode());
+					update.set(TOTAL, report.getTotal());
+					update.set(LAST_UPDATED, LocalDate.now());
+					mongoTemplate.upsert(query, update, Report.class);
+				});
+		RecursivePoolComponent.batchResultMap = new HashMap<>();
     }
 }

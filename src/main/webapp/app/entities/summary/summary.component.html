@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-body">
             <h2 id="page-heading">
-                <span>Upload Summary</span>
+                <span>Upload Summary for each file upload</span>
             </h2>
             <app-alert></app-alert>
             <br/>
@@ -10,19 +10,19 @@
                 <table class="table table-striped">
                     <thead>
                     <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                        <th jhiSortBy="fileName"><span>File Name</span>
+                        <th jhiSortBy="source"><span>Source</span>
                             <fa-icon [icon]="'sort'"></fa-icon>
                         </th>
-                        <th jhiSortBy="duration"><span>Process Duration</span>
+                        <th jhiSortBy="duration"><span>Duration</span>
                             <fa-icon [icon]="'sort'"></fa-icon>
                         </th>
-                        <th jhiSortBy="totalImported"><span>Total Imported</span>
+                        <th jhiSortBy="totalImported"><span>Total</span>
                             <fa-icon [icon]="'sort'"></fa-icon>
                         </th>
-                        <th jhiSortBy="totalValid"><span>Total Valid</span>
+                        <th jhiSortBy="totalValid"><span>Valid</span>
                             <fa-icon [icon]="'sort'"></fa-icon>
                         </th>
-                        <th jhiSortBy="totalNotValid"><span>Total Not Valid</span>
+                        <th jhiSortBy="totalNotValid"><span>Invalid</span>
                             <fa-icon [icon]="'sort'"></fa-icon>
                         </th>
                         <th></th>
@@ -30,7 +30,7 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let summary of summaries ;trackBy: trackId">
-                        <td>{{summary.fileName}}</td>
+                        <td>{{summary.source}}</td>
                         <td>{{summary.duration}}</td>
                         <td>{{summary.total}}</td>
                         <td>{{summary.valid}}</td>

@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             page: this.page,
             size: this.itemsPerPage,
             sort: this.sort(),
-            query: summary.fileName
+            search: summary.source
         }]);
     }
 }

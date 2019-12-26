@@ -81,12 +81,13 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
 	public static InvalidDeal createEntity() {
 		return new InvalidDeal()
 				.id(DEFAULT_ID)
+				.dealId(DEFAULT_DEAL_ID)
 				.fromIsoCode(DEFAULT_FROM_ISO_CODE)
 				.toIsoCode(DEFAULT_TO_ISO_CODE)
 				.time(DEFAULT_STRING_TIME)
 				.amount(DEFAULT_STRING_AMOUNT)
 				.source(DEFAULT_SOURCE)
-				.fileType(DEFAULT_FILE_TYPE)
+				.extension(DEFAULT_EXTENSION)
 				.uploadedOn(DEFAULT_STRING_UPLOADED_ON)
 				.reason(DEFAULT_REASON);
     }
@@ -107,11 +108,13 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
+				.andExpect(jsonPath("$.[*].dealId").value(hasItem(DEFAULT_DEAL_ID)))
 				.andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
 				.andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
 				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_STRING_TIME)))
 				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_STRING_AMOUNT)))
 				.andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
+				.andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXCEPTION)))
 				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(DEFAULT_STRING_UPLOADED_ON)));
     }
 
@@ -125,11 +128,13 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(jsonPath("$.id").value(invalidDeal.getId()))
+				.andExpect(jsonPath("$.dealId").value(DEFAULT_DEAL_ID))
 				.andExpect(jsonPath("$.fromIsoCode").value(DEFAULT_FROM_ISO_CODE))
 				.andExpect(jsonPath("$.toIsoCode").value(DEFAULT_TO_ISO_CODE))
 				.andExpect(jsonPath("$.time").value(DEFAULT_STRING_TIME))
 				.andExpect(jsonPath("$.amount").value(DEFAULT_STRING_AMOUNT))
 				.andExpect(jsonPath("$.source").value(DEFAULT_SOURCE))
+				.andExpect(jsonPath("$.extension").value(DEFAULT_EXTENSION))
 				.andExpect(jsonPath("$.uploadedOn").value(DEFAULT_STRING_UPLOADED_ON));
     }
 
@@ -156,11 +161,13 @@ public class InvalidDealResourceIntTest extends BaseResourceIntTest {
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
+				.andExpect(jsonPath("$.[*].dealId").value(hasItem(DEFAULT_DEAL_ID)))
 				.andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
 				.andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
 				.andExpect(jsonPath("$.[*].time").value(hasItem(DEFAULT_STRING_TIME)))
 				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_STRING_AMOUNT)))
 				.andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
+				.andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXTENSION)))
 				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(DEFAULT_STRING_UPLOADED_ON)));
 	}
 

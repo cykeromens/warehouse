@@ -68,9 +68,9 @@
                     <h6 class="">{{summary.date | date: "fullDate"}}</h6>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title pricing-card-title">{{summary.fileName}}</h3>
+                    <h3 class="card-title pricing-card-title">{{summary.source}}</h3>
                     <ul class="list-unstyled mt-3 mb-4">
-                        <li>Valid - {{summary.total}}</li>
+                        <li>Valid - {{summary.valid}}</li>
                         <li>Invalid - {{summary.invalid}}</li>
                         <li>Total - {{summary.total}}</li>
                         <li>Duration - {{summary.duration | number}} sec</li>

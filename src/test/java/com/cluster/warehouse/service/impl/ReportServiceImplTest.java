@@ -62,7 +62,7 @@ public class ReportServiceImplTest extends BaseResourceIntTest {
 				.time(DEFAULT_TIME)
 				.amount(DEFAULT_AMOUNT)
 				.source(DEFAULT_SOURCE)
-				.fileType(DEFAULT_FILE_TYPE)
+				.extension(DEFAULT_EXTENSION)
 				.uploadedOn(DEFAULT_UPLOADED_ON);
 	}
 

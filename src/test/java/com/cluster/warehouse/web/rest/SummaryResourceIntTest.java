@@ -77,15 +77,14 @@ public class SummaryResourceIntTest extends BaseResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Summary createEntity() {
-        Summary summary = new Summary()
-                .fileName(DEFAULT_FILE_NAME)
+        return new Summary()
+                .source(DEFAULT_SOURCE)
                 .duration(DEFAULT_DURATION)
                 .total(DEFAULT_TOTAL)
                 .valid(DEFAULT_VALID)
                 .invalid(DEFAULT_INVALID)
 				.duplicate(DEFAULT_DUPLICATE)
                 .date(DEFAULT_DATE_TIME);
-        return summary;
     }
 
     @Before
@@ -104,7 +103,7 @@ public class SummaryResourceIntTest extends BaseResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(summary.getId())))
-                .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME.toString())))
+                .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
                 .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION)))
                 .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.intValue())))
                 .andExpect(jsonPath("$.[*].valid").value(hasItem(DEFAULT_VALID.intValue())))
@@ -123,7 +122,7 @@ public class SummaryResourceIntTest extends BaseResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id").value(summary.getId()))
-                .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME.toString()))
+                .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE))
                 .andExpect(jsonPath("$.duration").value(DEFAULT_DURATION))
                 .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.intValue()))
                 .andExpect(jsonPath("$.valid").value(DEFAULT_VALID.intValue()))

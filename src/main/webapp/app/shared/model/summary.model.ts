@@ -2,7 +2,7 @@ import {Moment} from 'moment';
 
 export interface ISummary {
     id?: string;
-    fileName?: string;
+    source?: string;
     duration?: number;
     total?: number;
     valid?: number;
@@ -13,7 +13,7 @@ export interface ISummary {
 export class Summary implements ISummary {
     constructor(
         public id?: string,
-        public fileName?: string,
+        public source?: string,
         public duration?: number,
         public total?: number,
         public valid?: number,

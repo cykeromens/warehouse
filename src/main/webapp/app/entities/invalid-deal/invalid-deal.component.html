@@ -3,9 +3,8 @@
         <h2 id="page-heading">
             <span>Invalid Deals</span>
         </h2>
+        <app-alert></app-alert>
         <div class="row">
-            <app-alert-error></app-alert-error>
-            <app-alert></app-alert>
             <div class="col-sm-12">
                 <form name="searchForm" class="form-inline">
                     <div class="input-group w-100 mt-3">
@@ -26,10 +25,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                    <th jhiSortBy="fromIsoCode"><span>From Iso Code</span>
+                    <th jhiSortBy="fromIsoCode"><span>From</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
-                    <th jhiSortBy="toIsoCode"><span>To Iso Code</span>
+                    <th jhiSortBy="toIsoCode"><span>To</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
                     <th jhiSortBy="amount"><span>Amount</span>
@@ -38,7 +37,7 @@
                     <th jhiSortBy="source"><span>Source</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
-                    <th jhiSortBy="reason"><span>Failed Reason</span>
+                    <th jhiSortBy="reason"><span>Reason</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
                     <th></th>

@@ -24,7 +24,7 @@ public final class Constants {
 
 	//Deal fields
 	public static final String FAILED_REASON = "reason";
-	public static final String FILE_TYPE = "fileType";
+	public static final String EXTENSION = "extension";
 	public static final String FILE_SOURCE = "source";
 	public static final String UPLOADED_ON = "uploadedOn";
 	public static final String FROM_ISO_CODE = "fromIsoCode";
@@ -32,12 +32,12 @@ public final class Constants {
 	public static final String AMOUNT = "amount";
 	public static final String TIME = "time";
 	public static final String ID = "id";
+	public static final String DEAL_ID = "dealId";
 
 	//Document Fields
 	public static final String _ID = "_id";
 	public static final String _TO_ISO_CODE = "to_iso_code";
 	public static final String _FROM_ISO_CODE = "from_iso_code";
-	public static final String _FILE_TYPE = "file_type";
 	public static final String _UPLOADED_ON = "uploaded_on";
 
 	//Summary fields
@@ -49,6 +49,7 @@ public final class Constants {
 	public static final String LAST_UPDATED = "lastUpdated";
 
 	//Processing Error
+	public static final String FAILED_DUPLICATE_ERROR = "Already exist";
 	public static final String FAILED_MUST_NOT_BE_NULL = " cannot be empty.";
 	public static final String FAILED_REQUIRED_SIZE = "Incomplete field value for {}";
 	public static final String FAILED_REQUIRED_AMOUNT = "Amount must be a number";

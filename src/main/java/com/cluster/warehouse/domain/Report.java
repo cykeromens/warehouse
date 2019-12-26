@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -24,16 +25,17 @@ public class Report implements Serializable {
 	@Id
 	private String id;
 
-	@NotNull
+	@NotEmpty
 	@Size(min = 3, max = 3)
 	@Field("from_iso_code")
 	private String fromIsoCode;
 
-	@NotNull
+	@NotEmpty
 	@Size(min = 3, max = 3)
 	@Field("to_iso_code")
 	private String toIsoCode;
 
+	@NotNull
 	@Field("total")
 	private Long total;
 

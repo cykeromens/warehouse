@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -32,12 +33,12 @@ public class Deal implements Serializable {
     @Id
     private String id;
 
-    @NotNull(message = FROM_ISO_CODE + FAILED_MUST_NOT_BE_NULL)
+    @NotEmpty(message = FROM_ISO_CODE + FAILED_MUST_NOT_BE_NULL)
     @Field("from_iso_code")
     @Size(min = 3, max = 3, message = FROM_ISO_CODE + FAILED_REQUIRED_SIZE)
     private String fromIsoCode;
 
-    @NotNull(message = TO_ISO_CODE + FAILED_MUST_NOT_BE_NULL)
+    @NotEmpty(message = TO_ISO_CODE + FAILED_MUST_NOT_BE_NULL)
     @Size(min = 3, max = 3, message = TO_ISO_CODE + FAILED_REQUIRED_SIZE)
     @Field("to_iso_code")
     private String toIsoCode;
@@ -52,15 +53,16 @@ public class Deal implements Serializable {
     @Field("amount")
     private Double amount;
 
-    @NotNull(message = FILE_SOURCE + FAILED_MUST_NOT_BE_NULL)
+    @NotEmpty(message = FILE_SOURCE + FAILED_MUST_NOT_BE_NULL)
     @Field("source")
     private String source;
 
-    @Field("file_type")
-    private String fileType;
+    @Field("extension")
+    private String extension;
 
     @Field("uploaded_on")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_FORMAT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_FORMAT)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime uploadedOn;
 
     public String getId() {
@@ -141,17 +143,17 @@ public class Deal implements Serializable {
         this.source = source;
     }
 
-    public String getFileType() {
-        return fileType;
+    public String getExtension() {
+        return extension;
     }
 
-    public Deal fileType(String fileType) {
-        this.fileType = fileType;
+    public Deal extension(String extension) {
+        this.extension = extension;
         return this;
     }
 
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public LocalDateTime getUploadedOn() {
@@ -197,7 +199,7 @@ public class Deal implements Serializable {
                 ", time='" + getTime() + "'" +
                 ", amount=" + getAmount() +
                 ", source='" + getSource() + "'" +
-                ", fileType='" + getFileType() + "'" +
+                ", extension='" + getExtension() + "'" +
                 ", uploadedOn='" + getUploadedOn() + "'" +
                 "}";
     }

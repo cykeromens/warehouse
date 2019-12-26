@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 import static com.cluster.warehouse.web.rest.TestUtil.createFormattingConversionService;
-import static com.cluster.warehouse.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -92,12 +91,12 @@ public class DealResourceIntTest extends BaseResourceIntTest {
     public static Deal createEntity() {
         Deal deal = new Deal()
 				.id(DEFAULT_ID)
-            .fromIsoCode(DEFAULT_FROM_ISO_CODE)
-            .toIsoCode(DEFAULT_TO_ISO_CODE)
-            .time(DEFAULT_TIME)
-            .amount(DEFAULT_AMOUNT)
-            .source(DEFAULT_SOURCE)
-                .fileType(DEFAULT_FILE_TYPE)
+				.fromIsoCode(DEFAULT_FROM_ISO_CODE)
+				.toIsoCode(DEFAULT_TO_ISO_CODE)
+				.time(DEFAULT_TIME)
+				.amount(DEFAULT_AMOUNT)
+				.source(DEFAULT_SOURCE)
+				.extension(DEFAULT_EXTENSION)
                 .uploadedOn(DEFAULT_UPLOADED_ON);
         return deal;
     }
@@ -192,13 +191,13 @@ public class DealResourceIntTest extends BaseResourceIntTest {
             .andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
-            .andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
-            .andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
-				.andExpect(jsonPath("$.[*].time").value(hasItem(sameInstant(DEFAULT_TIME))))
+				.andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE.toString())))
+				.andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE.toString())))
+				.andExpect(jsonPath("$.[*].time").value(hasItem(localDateTime(DEFAULT_TIME))))
 				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
-            .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
-				.andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE.toString())))
-				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(sameInstant(DEFAULT_UPLOADED_ON))));
+				.andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
+				.andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXTENSION)))
+				.andExpect(jsonPath("$.[*].uploadedOn").value(hasItem(localDateTime(DEFAULT_UPLOADED_ON))));
     }
     
     @Test
@@ -213,11 +212,11 @@ public class DealResourceIntTest extends BaseResourceIntTest {
 				.andExpect(jsonPath("$.id").value(DEFAULT_ID))
 				.andExpect(jsonPath("$.fromIsoCode").value(DEFAULT_FROM_ISO_CODE.toString()))
 				.andExpect(jsonPath("$.toIsoCode").value(DEFAULT_TO_ISO_CODE.toString()))
-				.andExpect(jsonPath("$.time").value(sameInstant(DEFAULT_TIME)))
+				.andExpect(jsonPath("$.time").value(localDateTime(DEFAULT_TIME)))
 				.andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
 				.andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
-				.andExpect(jsonPath("$.fileType").value(DEFAULT_FILE_TYPE.toString()))
-				.andExpect(jsonPath("$.uploadedOn").value(sameInstant(DEFAULT_UPLOADED_ON)));
+				.andExpect(jsonPath("$.extension").value(DEFAULT_EXTENSION))
+				.andExpect(jsonPath("$.uploadedOn").value(localDateTime(DEFAULT_UPLOADED_ON)));
     }
 
     @Test
@@ -244,10 +243,10 @@ public class DealResourceIntTest extends BaseResourceIntTest {
 				.andExpect(jsonPath("$.[*].id").value(hasItem(DEFAULT_ID)))
                 .andExpect(jsonPath("$.[*].fromIsoCode").value(hasItem(DEFAULT_FROM_ISO_CODE)))
                 .andExpect(jsonPath("$.[*].toIsoCode").value(hasItem(DEFAULT_TO_ISO_CODE)))
-				.andExpect(jsonPath("$.[*].time").value(hasItem(sameInstant(DEFAULT_TIME))))
+				.andExpect(jsonPath("$.[*].time").value(hasItem(localDateTime(DEFAULT_TIME))))
 				.andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
                 .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
-                .andExpect(jsonPath("$.[*].fileType").value(hasItem(DEFAULT_FILE_TYPE)));
+				.andExpect(jsonPath("$.[*].extension").value(hasItem(DEFAULT_EXTENSION)));
     }
 
     @Test

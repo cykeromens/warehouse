@@ -1,29 +1,25 @@
-import {Moment} from 'moment';
-
 export interface IInvalidDeal {
     id?: string;
-    tagId?: string;
     fromIsoCode?: string;
     toIsoCode?: string;
-    time?: Moment;
-    amount?: number;
+    time?: string;
+    amount?: string;
     source?: string;
-    fileType?: string;
-    uploadedOn?: Moment;
+    extension?: string;
+    uploadedOn?: string;
     reason?: string;
 }
 
 export class InvalidDeal implements IInvalidDeal {
     constructor(
         public id?: string,
-        public tagId?: string,
         public fromIsoCode?: string,
         public toIsoCode?: string,
-        public time?: Moment,
-        public amount?: number,
+        public time?: string,
+        public amount?: string,
         public source?: string,
-        public fileType?: string,
-        public uploadedOn?: Moment,
+        public extension?: string,
+        public uploadedOn?: string,
         public reason?: string,
 
     ) {

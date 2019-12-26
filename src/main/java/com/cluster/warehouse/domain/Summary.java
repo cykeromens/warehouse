@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -24,12 +25,12 @@ public class Summary implements Serializable {
 	@Id
 	private String id;
 
-    @NotNull
+	@NotEmpty
 	@Field("file_name")
 	@Indexed(unique = true)
-	private String fileName;
+	private String source;
 
-    @NotNull
+	@NotEmpty
 	@Field("duration")
 	private Double duration;
 
@@ -41,15 +42,15 @@ public class Summary implements Serializable {
 	@Field("valid")
 	private Long valid;
 
-    @NotNull
+	@NotEmpty
 	@Field("invalid")
 	private Long invalid;
 
-	@NotNull
+	@NotEmpty
 	@Field("duplicate")
 	private Long duplicate;
 
-	@NotNull
+	@NotEmpty
 	@Field("date")
 	private LocalDateTime date;
 
@@ -61,17 +62,17 @@ public class Summary implements Serializable {
         this.id = id;
     }
 
-    public String getFileName() {
-        return fileName;
+	public String getSource() {
+		return source;
     }
 
-    public Summary fileName(String fileName) {
-        this.fileName = fileName;
+	public Summary source(String source) {
+		this.source = source;
         return this;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+	public void setSource(String source) {
+		this.source = source;
     }
 
 	public Double getDuration() {
@@ -176,7 +177,7 @@ public class Summary implements Serializable {
     public String toString() {
         return "Summary{" +
 				"id=" + getId() +
-				", fileName='" + getFileName() + "'" +
+				", source='" + getSource() + "'" +
 				", duration=" + getDuration() +
 				", total=" + getTotal() +
 				", valid=" + getValid() +

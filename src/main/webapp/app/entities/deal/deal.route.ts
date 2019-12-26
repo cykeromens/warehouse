@@ -38,18 +38,7 @@ export const dealRoute: Routes = [
             pageTitle: 'Deals'
         }
     },
-    {
-        path: ':fileName',
-        component: DealComponent,
-        resolve: {
-            pagingParams: JhiResolvePagingParams
-        },
-        data: {
-            authorities: [],
-            defaultSort: 'fromIsoCode,asc',
-            pageTitle: 'Deals'
-        }
-    },
+
     {
         path: ':id/view',
         component: DealDetailComponent,

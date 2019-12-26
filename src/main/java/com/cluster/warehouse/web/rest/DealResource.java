@@ -106,7 +106,7 @@ public class DealResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/deals")
-    public ResponseEntity<List<Deal>> searchApprovalLogs(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<Deal>> search(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of ApprovalLogs for query {}", query);
         Page<Deal> page = dealService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/deals");

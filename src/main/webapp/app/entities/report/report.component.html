@@ -9,16 +9,16 @@
             <table class="table table-striped">
                 <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                    <th jhiSortBy="fromIsoCode"><span>From Iso Code</span>
+                    <th jhiSortBy="fromIsoCode"><span>From</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
-                    <th jhiSortBy="toIsoCode"><span>To Iso Code</span>
+                    <th jhiSortBy="toIsoCode"><span>To</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
                     <th jhiSortBy="total"><span>Total</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
-                    <th jhiSortBy="lastUpdated"><span>Last Updated</span>
+                    <th jhiSortBy="lastUpdated"><span>Updated</span>
                         <fa-icon [icon]="'sort'"></fa-icon>
                     </th>
                     <th></th>

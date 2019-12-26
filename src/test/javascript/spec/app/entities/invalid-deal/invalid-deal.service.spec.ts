@@ -2,8 +2,6 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {map, take} from 'rxjs/operators';
-import * as moment from 'moment';
-import {DATE_FORMAT, DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
 import {InvalidDealService} from 'app/entities/invalid-deal/invalid-deal.service';
 import {IInvalidDeal, InvalidDeal} from 'app/shared/model/invalid-deal.model';
 
@@ -13,7 +11,6 @@ describe('Service Tests', () => {
         let service: InvalidDealService;
         let httpMock: HttpTestingController;
         let elemDefault: IInvalidDeal;
-        let currentDate: moment.Moment;
         beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [HttpClientTestingModule]
@@ -21,22 +18,21 @@ describe('Service Tests', () => {
             injector = getTestBed();
             service = injector.get(InvalidDealService);
             httpMock = injector.get(HttpTestingController);
-            currentDate = moment();
+            // currentDate = moment();
 
-            elemDefault = new InvalidDeal('ID', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', currentDate, 0, 'AAAAAAA', 'AAAAAAA', currentDate, "AAAAAA");
+            elemDefault = new InvalidDeal('AAAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA',
+                'AAAAAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAA');
         });
 
         describe('Service methods', async () => {
             it('should find an element', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        time: currentDate.format(DATE_TIME_FORMAT),
-                        uploadedOn: currentDate.format(DATE_FORMAT)
                     },
                     elemDefault
                 );
                 service
-                    .find('123')
+                    .find('AAAAAAAA')
                     .pipe(take(1))
                     .subscribe(resp => expect(resp).toMatchObject({body: elemDefault}));
 
@@ -47,22 +43,20 @@ describe('Service Tests', () => {
             it('should return a list of InvalidDeal', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        tagId: 'BBBBBB',
+                        id: 'BBBBBB',
                         fromIsoCode: 'BBBBBB',
                         toIsoCode: 'BBBBBB',
-                        time: currentDate.format(DATE_TIME_FORMAT),
-                        amount: 1,
+                        time: 'BBBBBBB',
+                        amount: 'BBBBBBB',
                         source: 'BBBBBB',
-                        fileType: 'BBBBBB',
-                        uploadedOn: currentDate.format(DATE_FORMAT),
+                        extension: 'BBBBBB',
+                        uploadedOn: 'BBBBBB',
                         reason: 'BBBBBB',
                     },
                     elemDefault
                 );
                 const expected = Object.assign(
                     {
-                        time: currentDate,
-                        uploadedOn: currentDate
                     },
                     returnedFromService
                 );

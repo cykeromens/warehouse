@@ -32,7 +32,7 @@ public class RecursivePoolComponent extends RecursiveAction {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	public static Map<String, Integer> batchResultMap = new HashMap<>();
+	static Map<String, Integer> batchResultMap = new HashMap<>();
 	private final List<Map<String, String>> readLines;
 
 	public RecursivePoolComponent(List<Map<String, String>> readLines) {

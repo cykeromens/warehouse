@@ -42,6 +42,10 @@ export class DealComponent implements OnInit, OnDestroy {
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
         });
+        this.currentSearch =
+            this.activatedRoute.snapshot
+            && this.activatedRoute.snapshot.params['search'] ?
+                this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
@@ -83,6 +87,7 @@ export class DealComponent implements OnInit, OnDestroy {
             queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
+                search: this.currentSearch,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }
         });
@@ -118,6 +123,7 @@ export class DealComponent implements OnInit, OnDestroy {
         ]);
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
         this.registerChangeInDeals();

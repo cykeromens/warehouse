@@ -43,6 +43,10 @@ export class InvalidDealComponent implements OnInit, OnDestroy {
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
         });
+        this.currentSearch =
+            this.activatedRoute.snapshot
+            && this.activatedRoute.snapshot.params['search'] ?
+                this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {

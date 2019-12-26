@@ -17,7 +17,7 @@ spring:
       enabled: false
   data:
     mongodb:
-      uri: mongodb://localhost:27017/?minPoolSize=20
+      uri: mongodb://localhost:27017/?minPoolSize=3000&maxPoolSize=10000&shellBatchSize=100
       database: warehouse-dev
   thymeleaf:
     cache: true
