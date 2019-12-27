@@ -30,7 +30,7 @@ public class Summary implements Serializable {
 	@Indexed(unique = true)
 	private String source;
 
-	@NotEmpty
+	@NotNull
 	@Field("duration")
 	private Double duration;
 
@@ -42,15 +42,14 @@ public class Summary implements Serializable {
 	@Field("valid")
 	private Long valid;
 
-	@NotEmpty
+	@NotNull
 	@Field("invalid")
 	private Long invalid;
 
-	@NotEmpty
+	@NotNull
 	@Field("duplicate")
 	private Long duplicate;
 
-	@NotEmpty
 	@Field("date")
 	private LocalDateTime date;
 
